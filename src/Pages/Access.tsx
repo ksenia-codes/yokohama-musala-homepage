@@ -1,7 +1,7 @@
 import React from "react";
 
 function Access() {
-  return <div></div>;
+  return <div>Access</div>;
 }
 
 export default Access;

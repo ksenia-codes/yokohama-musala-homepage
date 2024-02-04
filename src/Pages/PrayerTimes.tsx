@@ -1,7 +1,7 @@
 import React from "react";
 
 function PrayerTimes() {
-  return <div></div>;
+  return <div>Prayer times</div>;
 }
 
 export default PrayerTimes;
