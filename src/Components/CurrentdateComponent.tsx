@@ -1,11 +1,16 @@
 import React from "react";
 
+import {
+  writeGregorianDate,
+  writeIslamicDate,
+} from "../common/CalendarCalculations";
+
 function CurrentDateComponent() {
   return (
     <div className="bg-color-div main-section-container">
-      <div className="main-section-h3-container">
+      <div className="disp-flex main-section-current-date">
         <h3>
-          16 Jumadal Ula 1445 <br /> November 28, 2023
+          {writeIslamicDate()} <br /> {writeGregorianDate()}
         </h3>
       </div>
     </div>
