@@ -4,6 +4,7 @@
   --font-main: "Poppins", serif;
 
   --font-size-mid: 18px;
+  --font-size-mid-small-screen: 16px;
 
   --margin-app: 0 5%;
   --margin-sides: 5%;
@@ -11,7 +12,7 @@
 
   --padding-section: 1rem;
 
-  --bg-color-main: rgba(255, 163, 69, 0.4);
+  --bg-color-main: rgba(255, 218, 181, 1);
   --bg-color-div: rgba(255, 255, 255, 0.8);
   --bg-color-secondary-100: rgba(129, 115, 106, 1);
   --bg-color-secondary-200: rgba(217, 217, 217, 0.5);
@@ -172,7 +173,7 @@ footer {
 }
 
 .main-section-container {
-  margin: 0.5rem 0;
+  margin: 0.5rem 0 1.25rem 0;
   padding: var(--padding-section) 0;
 
   border-radius: 10px;
@@ -192,11 +193,6 @@ footer {
 /* abou us */
 .main-about-us-container {
   margin: 0.5rem var(--margin-section-sides);
-
-  img {
-    height: 100%;
-    width: 100%;
-  }
 }
 
 .main-about-us-text {
@@ -216,20 +212,37 @@ footer {
 }
 .main-section-news-entries {
   margin: 0.25rem var(--margin-section-sides);
+}
+.main-section-news-date,
+.main-section-news-title {
+  flex: 50%;
+}
 
-  justify-content: space-between;
+/* current date */
+.main-section-current-date {
+  justify-content: center;
+  align-items: center;
+
+  margin: 0 0.5rem;
 }
 
 /* prayer timer */
 .main-section-prayer-time {
-  margin: 0.25rem var(--margin-section-sides);
+  margin: 0.75rem var(--margin-section-sides);
 
   justify-content: space-between;
   font-size: var(--font-size-mid);
 
 }
 
+.main-section-prayer, 
+.main-section-time {
+  flex: 50%;
+}
+
 .jummah-time-container {
+  padding: 0.5rem 0;
+
   background-color: var(--bg-color-secondary-100);
   border-bottom-left-radius: 10px;
   border-bottom-right-radius: 10px;
@@ -272,7 +285,11 @@ footer {
   }
 
   .topnav ul {
+    margin: 0;
+
+    z-index: 1;
     position: fixed;
+
     display: flex;
     justify-content: space-around;
     flex-direction: column;
@@ -283,13 +300,14 @@ footer {
     height: 90vh;
     width: 50%;
 
-    background-color: #f5f5f5;
+    background-color: var(--bg-color-main);
 
     transform: translateX(100%);
     transition: transform 0.5s ease-in;
   }
   .topnav.visible ul {
     transform: translateX(0%);
+
   }
 
   .topnav-hamburger {
@@ -298,13 +316,20 @@ footer {
 
   .main-container {
     flex-direction: column;
+
+    /* font-size: var(--font-size-mid-small-screen); */
   }
   .main-container-left,
   .main-sidebar-container {
     margin: 0;
   }
   
-
+  .main-about-us-container {
+    flex-direction: column;
+  }
+  .main-about-us-address {
+    margin: 0.5rem 0;
+  }
 }
 
 /* @media screen and (min-width: 760px) {
