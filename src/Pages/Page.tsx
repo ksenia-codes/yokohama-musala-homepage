@@ -19,6 +19,7 @@ function Page() {
         <Routes>
           <Route path="/" element={<Main />}></Route>
           <Route path="/news" element={<News />}></Route>
+          <Route path="/news/:id" element={<News />}></Route>
           <Route path="/services" element={<Services />}></Route>
           <Route path="/prayertimes" element={<PrayerTimes />}></Route>
           <Route path="/contact" element={<Contact />}></Route>

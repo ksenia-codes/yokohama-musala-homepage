@@ -1,36 +1,48 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
+
+import { INews } from "../common/NewsInterface";
+import newsJSON from "../assets/json/news.json";
 
 function NewsComponent() {
+  // useNavigate
+  let navigate = useNavigate();
+  const handleNewsOnClick = (path: string, news: INews) => {
+    navigate(path, { state: { newsEntry: news } });
+  };
+
+  // retrieve and sort news by date (newest first)
+  const news = newsJSON.news;
+  const sortedNews = news.sort(
+    (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
+  );
+  // get the newest 5
+  const newestNews = sortedNews.slice(0, 5);
+
   return (
     <div className="bg-color-div main-section-container">
       <h3>News & Updates</h3>
       <div className="main-section-news-container disp-flex">
-        <div className="disp-flex hover-cursor main-section-news-entries">
-          <div className="main-section-news-date">June 27, 2023</div>
-          <div className="main-section-news-title">
-            Eid al-Adha 2023 announcement
+        {newestNews.map((news) => (
+          <div
+            className="disp-flex hover-cursor main-section-news-entries"
+            key={news.id}
+          >
+            <div className="main-section-news-date">
+              {new Date(news.date).toLocaleDateString("en-US", {
+                year: "numeric",
+                month: "long",
+                day: "numeric",
+              })}
+            </div>
+            <div
+              className="main-section-news-title"
+              onClick={() => handleNewsOnClick("/news", news)}
+            >
+              {news.title}
+            </div>
           </div>
-        </div>
-        <div className="disp-flex hover-cursor main-section-news-entries">
-          <div className="main-section-news-date">April 30, 2023</div>
-          <div className="main-section-news-title">Hajj 2023 tour</div>
-        </div>
-        <div className="disp-flex hover-cursor main-section-news-entries">
-          <div className="main-section-news-date">April 21, 2023</div>
-          <div className="main-section-news-title">
-            Eid al-Fitr 2023 announcement
-          </div>
-        </div>
-        <div className="disp-flex hover-cursor main-section-news-entries">
-          <div className="main-section-news-date">March 20, 2023</div>
-          <div className="main-section-news-title">
-            Ramadhan 2023 announcement
-          </div>
-        </div>
-        <div className="disp-flex hover-cursor main-section-news-entries">
-          <div className="main-section-news-date">November 10, 2022</div>
-          <div className="main-section-news-title">Umrah tour</div>
-        </div>
+        ))}
       </div>
     </div>
   );
