@@ -1,18 +1,24 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
+
+import { HeaderContext, HeaderContextType } from "../styles/HeaderContext";
+import { PAGE_NAMES } from "../common/Const";
 
 function HeaderComponent() {
   // useState
   const [visible, setVisible] = useState("");
-  const [active, setActive] = useState("");
+  const [activeHamburger, setActiveHamburger] = useState("");
+
+  // useContext
+  const { activeTab } = useContext(HeaderContext) as HeaderContextType;
 
   // handlers
   const handleHamburgerOnClick = () => {
-    if (active === "active") {
-      setActive("");
+    if (activeHamburger === "active") {
+      setActiveHamburger("");
       setVisible("");
     } else {
-      setActive("active");
+      setActiveHamburger("active");
       setVisible("visible");
     }
   };
@@ -20,7 +26,7 @@ function HeaderComponent() {
   // useNavigate
   let navigate = useNavigate();
   const handleHeaderTabOnClick = (path: string) => {
-    navigate(path);
+    navigate(`/${path}`);
   };
 
   return (
@@ -28,50 +34,74 @@ function HeaderComponent() {
       <nav className={`topnav disp-flex ${visible}`}>
         <div
           className="logo hover-cursor"
-          onClick={() => handleHeaderTabOnClick("/")}
+          onClick={() => handleHeaderTabOnClick("")}
         >
           YM
         </div>
         <ul>
           <li
-            className="hover-cursor"
-            onClick={() => handleHeaderTabOnClick("/")}
+            className={`${
+              activeTab === PAGE_NAMES.aboutUs
+                ? "active hover-cursor"
+                : "hover-cursor"
+            }`}
+            onClick={() => handleHeaderTabOnClick(PAGE_NAMES.aboutUs)}
           >
             About us
           </li>
           <li
-            className="hover-cursor"
-            onClick={() => handleHeaderTabOnClick("/news")}
+            className={`${
+              activeTab === PAGE_NAMES.news
+                ? "active hover-cursor"
+                : "hover-cursor"
+            }`}
+            onClick={() => handleHeaderTabOnClick(PAGE_NAMES.news)}
           >
             News
           </li>
           <li
-            className="hover-cursor"
-            onClick={() => handleHeaderTabOnClick("/services")}
+            className={`${
+              activeTab === PAGE_NAMES.services
+                ? "active hover-cursor"
+                : "hover-cursor"
+            }`}
+            onClick={() => handleHeaderTabOnClick(PAGE_NAMES.services)}
           >
             Services
           </li>
           <li
-            className="hover-cursor"
-            onClick={() => handleHeaderTabOnClick("/prayertimes")}
+            className={`${
+              activeTab === PAGE_NAMES.prayerTimes
+                ? "active hover-cursor"
+                : "hover-cursor"
+            }`}
+            onClick={() => handleHeaderTabOnClick(PAGE_NAMES.prayerTimes)}
           >
             Prayer Times
           </li>
           <li
-            className="hover-cursor"
-            onClick={() => handleHeaderTabOnClick("/contact")}
+            className={`${
+              activeTab === PAGE_NAMES.contact
+                ? "active hover-cursor"
+                : "hover-cursor"
+            }`}
+            onClick={() => handleHeaderTabOnClick(PAGE_NAMES.contact)}
           >
             Contact
           </li>
           <li
-            className="hover-cursor"
-            onClick={() => handleHeaderTabOnClick("/access")}
+            className={`${
+              activeTab === PAGE_NAMES.access
+                ? "active hover-cursor"
+                : "hover-cursor"
+            }`}
+            onClick={() => handleHeaderTabOnClick(PAGE_NAMES.access)}
           >
             Access
           </li>
         </ul>
         <div
-          className={`hover-cursor topnav-hamburger ${active}`}
+          className={`hover-cursor topnav-hamburger ${activeHamburger}`}
           onClick={handleHamburgerOnClick}
         >
           <div className="line1"></div>

@@ -1,10 +1,20 @@
-import React from "react";
+import React, { useContext, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 
+import { HeaderContext, HeaderContextType } from "../styles/HeaderContext";
 import { INews } from "../common/NewsInterface";
 import newsJSON from "../assets/json/news.json";
+import { PAGE_NAMES } from "../common/Const";
 
 function News() {
+  // useContext
+  const { updateActiveTab } = useContext(HeaderContext) as HeaderContextType;
+
+  // useEffect
+  useEffect(() => {
+    updateActiveTab(PAGE_NAMES.news);
+  }, []);
+
   // useNavigate
   let navigate = useNavigate();
 

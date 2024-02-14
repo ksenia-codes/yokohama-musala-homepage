@@ -1,9 +1,10 @@
-import React from "react";
+import React, { useContext, useEffect } from "react";
 
 // components
+import { HeaderContext, HeaderContextType } from "../styles/HeaderContext";
+import { PAGE_NAMES } from "../common/Const";
 import AboutUsComponent from "../components/AboutUsComponent";
 import NewsComponent from "../components/NewsComponent";
-// import SidebarComponent from "../components/SidebarComponent";
 import CurrentDateComponent from "../components/CurrentdateComponent";
 import PrayerTimesTodayComponent from "../components/PrayerTimesTodayComponent";
 import DonationsComponent from "../components/DonationsComponent";
@@ -11,6 +12,14 @@ import DonationsComponent from "../components/DonationsComponent";
 import musalaMainImage from "../images/yokohama_musala_inside.png";
 
 function Main() {
+  // useContext
+  const { updateActiveTab } = useContext(HeaderContext) as HeaderContextType;
+
+  // useEffect
+  useEffect(() => {
+    updateActiveTab(PAGE_NAMES.aboutUs);
+  }, []);
+
   return (
     <div>
       <div className="main-image-container">

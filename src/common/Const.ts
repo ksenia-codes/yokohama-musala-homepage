@@ -1,0 +1,1 @@
+export const PAGE_NAMES = { aboutUs: "", news: "news", services: "services", prayerTimes: "prayertimes", contact: "contact", access: "access" };
