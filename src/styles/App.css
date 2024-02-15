@@ -100,9 +100,7 @@ header {
   transition: background-size 0.5s;
   
 }
-.topnav ul li:hover {
-  background-size: 100% 2px;
-}
+.topnav ul li:hover,
 .topnav ul li.active {
   background-size: 100% 2px;
 }
