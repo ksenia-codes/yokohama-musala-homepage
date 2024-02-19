@@ -37,6 +37,9 @@ function News() {
           })}
         </div>
         <div className="news-entry-content">{newsEntry.content}</div>
+        {newsEntry.img.map((image) => (
+          <img className="news-entry-image" src={image} alt="" key={image} />
+        ))}
       </div>
     ) : (
       <div className="news-container">The news entry does not exist</div>
