@@ -135,13 +135,27 @@ footer {
   bottom: 0;
  
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
 
   width: 100%;
   height: 2.5rem;
 
   background-color: var(--bg-color-secondary-200);
+
+  .footer-fb-icon {
+    margin-left: var(--margin-section-sides);
+
+    align-items: center;
+
+    color: black;
+  }
+  .footer-fb-icon:hover {
+    color: var(--bg-color-secondary-100);
+  }
+  .footer-copyright { 
+    margin-right: var(--margin-section-sides);
+  }
 }
 
 
@@ -337,7 +351,8 @@ footer {
   transition: background 700ms;
 }
 .news-entry-date,
-.news-entry-content {
+.news-entry-content,
+.news-entry-image {
   padding: 0.25rem 1.5rem;
   
   white-space: pre-wrap;

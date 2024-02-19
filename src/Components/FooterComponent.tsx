@@ -1,9 +1,18 @@
 import React from "react";
+import FacebookIcon from "@mui/icons-material/Facebook";
 
 function FooterComponent() {
   return (
     <footer>
-      <div>© Yokohama Musala 2023</div>
+      <a
+        href="https://www.facebook.com/yokohamamusala/"
+        className="footer-fb-icon disp-flex"
+      >
+        <FacebookIcon></FacebookIcon>
+      </a>
+      <div className="footer-copyright">
+        ©{new Date().getFullYear()} Yokohama Musala
+      </div>
     </footer>
   );
 }

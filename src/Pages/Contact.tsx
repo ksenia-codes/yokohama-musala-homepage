@@ -16,7 +16,27 @@ function Contact() {
   return (
     <div className="page-container">
       <h2>Contact us</h2>
-      <div>You can contact us using the following</div>
+      <div className="page-content-container">
+        You can contact us using the following
+        <div>
+          <div>
+            <h3>Phone</h3>
+            <div>045-294-8816</div>
+          </div>
+          <div>
+            <h3>Facebook</h3>
+            <div>
+              <a href="https://www.facebook.com/yokohamamusala/">
+                https://www.facebook.com/yokohamamusala/
+              </a>
+            </div>
+          </div>
+          <div>
+            <h3>Email</h3>
+            <div>(yokohamamusala@gmail.com)</div>
+          </div>
+        </div>
+      </div>
     </div>
   );
 }

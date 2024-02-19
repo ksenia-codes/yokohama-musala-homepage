@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 
 import { HeaderContext, HeaderContextType } from "../styles/HeaderContext";
 import { PAGE_NAMES } from "../common/Const";
+import logo from "../images/yokohama_musala_logo.png";
 
 function HeaderComponent() {
   // useState
@@ -32,12 +33,13 @@ function HeaderComponent() {
   return (
     <header>
       <nav className={`topnav disp-flex ${visible}`}>
-        <div
+        <img
+          src={logo}
           className="logo hover-cursor"
           onClick={() => handleHeaderTabOnClick("")}
-        >
-          YM
-        </div>
+          alt="Home"
+          width={50}
+        />
         <ul>
           <li
             className={`${
@@ -47,7 +49,7 @@ function HeaderComponent() {
             }`}
             onClick={() => handleHeaderTabOnClick(PAGE_NAMES.aboutUs)}
           >
-            About us
+            Home
           </li>
           <li
             className={`${

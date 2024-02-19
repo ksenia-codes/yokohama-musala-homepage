@@ -20,6 +20,7 @@ function AboutUsComponent() {
         </div>
         <div className="main-map-access">
           <iframe
+            title="Access map"
             src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d12998.20092361736!2d139.6088266!3d35.4659278!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x60185be90cf56fff%3A0xa3cabe987388bf2c!2sYOKOHAMA%20MUSALAH!5e0!3m2!1sen!2sjp!4v1707315935244!5m2!1sen!2sjp"
             width="600"
             height="450"
