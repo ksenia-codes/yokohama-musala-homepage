@@ -16,6 +16,7 @@
   --bg-color-main: rgba(255, 218, 181, 1);
   --bg-color-div: rgba(255, 255, 255, 0.8);
   --bg-color-accent: rgba(255, 163, 69, 1);
+  --bg-color-accent-200: rgba(255, 163, 69, 0.5);
   --bg-color-secondary-100: rgba(129, 115, 106, 1);
   --bg-color-secondary-200: rgba(217, 217, 217, 0.5);
 }
@@ -301,8 +302,9 @@ footer {
 
 /* donation btn */
 .main-donation-btn {
-  background-color: var(--bg-color-secondary-100);
+  background-color: var(--bg-color-accent);
   border-radius: 10px;
+  border: 2px var(--bg-color-accent) solid;
 
   height: 92px;
 
@@ -312,6 +314,11 @@ footer {
   color: #ffffff;
   font-weight: bold;
   font-size: 36px;
+
+  transition: all 500ms ease-out;
+}
+.main-donation-btn:hover {
+  background-color: var(--bg-color-accent-200);
 }
 
 
