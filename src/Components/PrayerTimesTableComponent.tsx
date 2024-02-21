@@ -51,7 +51,10 @@ function PrayerTimesTableComponent() {
         >
           &#60;
         </h3>
-        <h3>{dateDisplayed.toLocaleDateString("en-US", { month: "long" })}</h3>
+        <h3>
+          {dateDisplayed.toLocaleDateString("en-US", { month: "long" })}{" "}
+          {dateDisplayed.getFullYear()}
+        </h3>
         <h3
           className="hover-cursor prayer-timetable-month-arrow"
           onClick={() => handleNextMonthOnClick()}
