@@ -33,7 +33,11 @@ function Main() {
       <div className="main-container">
         <div className="main-container-left">
           <AboutUsComponent></AboutUsComponent>
-          <NewsComponent></NewsComponent>
+          <NewsComponent
+            containerClassName="main-section"
+            className="main-section-news"
+            pageName={PAGE_NAMES.aboutUs}
+          />
         </div>
         <div className="main-container-right">
           <CurrentDateComponent></CurrentDateComponent>

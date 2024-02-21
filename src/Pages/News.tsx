@@ -1,8 +1,8 @@
 import React, { useContext, useEffect } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 
 import { HeaderContext, HeaderContextType } from "../styles/HeaderContext";
-import { INews } from "../common/NewsInterface";
+import NewsComponent from "../components/NewsComponent";
 import newsJSON from "../assets/json/news.json";
 import { PAGE_NAMES } from "../common/Const";
 
@@ -14,9 +14,6 @@ function News() {
   useEffect(() => {
     updateActiveTab(PAGE_NAMES.news);
   }, []);
-
-  // useNavigate
-  let navigate = useNavigate();
 
   // useParams
   const { id } = useParams();
@@ -45,39 +42,12 @@ function News() {
       <div className="news-container">The news entry does not exist</div>
     );
   } else {
-    // TODO: add pagination
-
-    // otherwise, fetch and show the list of news
-    const handleNewsOnClick = (path: string, news: INews) => {
-      navigate(path, { state: { newsEntry: news } });
-    };
-
-    // retrieve news and sort by date (newest first)
-    const news = newsJSON.news;
-    const sortedNews = news.sort(
-      (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
-    );
-
     return (
-      <div className="news-container page-container">
-        <h2>News & Updates</h2>
-        {sortedNews.map((news) => (
-          <div
-            className="disp-flex hover-cursor news-list-entries"
-            key={news.id}
-            onClick={() => handleNewsOnClick(`/news/${news.id}`, news)}
-          >
-            <div className="news-list-entry-date">
-              {new Date(news.date).toLocaleDateString("en-US", {
-                year: "numeric",
-                month: "long",
-                day: "numeric",
-              })}
-            </div>
-            <div className="news-list-entry-title">{news.title}</div>
-          </div>
-        ))}
-      </div>
+      <NewsComponent
+        containerClassName="page"
+        className="news-list"
+        pageName={PAGE_NAMES.news}
+      />
     );
   }
 }

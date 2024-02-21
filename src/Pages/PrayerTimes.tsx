@@ -21,7 +21,6 @@ function PrayerTimes() {
     fetchData(dateDisplayed.getFullYear(), dateDisplayed.getMonth() + 1);
   }, []);
 
-  // TODO: params: month, year
   const fetchData = async (year: number, month: number) => {
     const data = await fetch(
       `http://api.aladhan.com/v1/calendarByCity/${year}/${month}?city=Yokohama&country=Japan&method=3`
