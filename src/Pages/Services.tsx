@@ -18,18 +18,7 @@ function Services() {
       <h2>Our services</h2>
       <div className="page-content-container">
         Here will be a list of services we can provide
-        <div>
-          <iframe
-            src="https://www.facebook.com/plugins/video.php?height=314&href=https%3A%2F%2Fwww.facebook.com%2Fyokohamamusala%2Fvideos%2F1822095148304775%2F&show_text=false&width=560&t=0"
-            width="560"
-            height="314"
-            style={{ border: "none", overflow: "hidden" }}
-            scrolling="no"
-            frameBorder="0"
-            allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"
-            allowFullScreen={true}
-          ></iframe>
-        </div>
+        <div></div>
       </div>
     </div>
   );

@@ -28,6 +28,8 @@ function HeaderComponent() {
   let navigate = useNavigate();
   const handleHeaderTabOnClick = (path: string) => {
     navigate(`/${path}`);
+    setVisible("");
+    setActiveHamburger("");
   };
 
   return (
