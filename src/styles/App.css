@@ -442,6 +442,104 @@ footer {
   }
 }
 
+/* admin */
+.admin-page-container {
+  margin: 1rem var(--margin-sides);
+ 
+  min-height: 70vh;
+
+  border: 2px solid var(--bg-color-accent);
+  border-radius: 10px;
+
+  background-color: var(--bg-color-div);
+
+  h2 {
+    display: flex;
+    justify-content: center;
+  }
+}
+.admin-page-content {
+  padding: 0 5rem;
+}
+
+.admin-main-section {
+  padding: 3rem 1.5rem;
+
+  justify-content: space-between;
+
+  font-weight: bold;
+  font-size: 24px;
+
+  border-bottom: 2px var(--bg-color-accent) solid;
+
+  transition: background 700ms;
+
+  .next-arrow {
+    font-size: 48px;
+  }
+}
+.admin-main-section.top {
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+}
+.admin-main-section:hover {
+  background-color: var(--bg-color-main);
+}
+
+.upd-prayer-times .buttons {
+  justify-content: center;
+
+  .button {
+    margin: 0 1rem;
+
+    width: 75px;
+    height: 35px;
+
+    display: none;
+
+    background-color: var(--bg-color-secondary-100);
+    border: 2px var(--bg-color-secondary-100) solid;
+    border-radius: 10%;
+    color: #ffffff;
+
+    transition: all 300ms;
+  }
+  .button:hover {
+    background-color: var(--bg-color-secondary-200);
+    color: var(--bg-color-secondary-100);
+  }
+  .visible {
+    display: flex;
+    justify-content: center;
+    align-items: center;    
+  }
+}
+.upd-prayer-times {
+
+  .prayer-times {
+    padding: 0 10%;
+  }
+  .prayer {
+    margin: 1rem 0;
+  }
+
+  .prayer-title {
+    flex: 30%;
+    display: flex;
+    align-items: center;
+  }
+  .prayer-text-area {
+    display: none;
+  }
+  .prayer-text-area.visible {
+    display: flex;
+    flex: 70%;
+    justify-content: center;
+    align-items: center;    
+  }
+  
+}
+
 /* responsive*/
 @media screen and (max-width: 760px) {
   body {
