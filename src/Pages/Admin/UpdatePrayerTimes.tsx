@@ -1,37 +1,60 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import dayjs from "dayjs";
 import customParseFormat from "dayjs/plugin/customParseFormat";
-import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
-import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-import { TimePicker } from "@mui/x-date-pickers/TimePicker";
 
-import prayerJSON from "../../assets/json/prayerTimes.json";
+import UpdatePrayerTimesComponent from "../../components/Admin/UpdatePrayerTimesComponent";
+
+import { supabase } from "../../supabase";
+import { IPrayers } from "../../common/Interfaces";
 
 function UpdatePrayerTimes() {
+  enum ScreenMode {
+    edit = "edit",
+    view = "view",
+  }
+
   // useState
-  const [mode, setMode] = useState("edit");
-  const [fajr, setFajr] = useState(prayerJSON.fajr);
-  const [dhuhr, setDhuhr] = useState(prayerJSON.dhuhr);
-  const [asr, setAsr] = useState(prayerJSON.asr);
-  const [maghreb, setMaghreb] = useState(prayerJSON.maghreb);
-  const [isha, setIsha] = useState(prayerJSON.isha);
-  const [jummah, setJummah] = useState(prayerJSON.jummah);
+  const [prayersData, setPrayersData] = useState([] as IPrayers[]);
+  const [mode, setMode] = useState(ScreenMode.edit);
+  const [fajr, setFajr] = useState("");
+  const [dhuhr, setDhuhr] = useState("");
+  const [asr, setAsr] = useState("");
+  const [maghreb, setMaghreb] = useState("");
+  const [isha, setIsha] = useState("");
+  const [jummah, setJummah] = useState("");
+
+  // useEffect
+  useEffect(() => {
+    fetchPrayersData().then((data) => {
+      setPrayersData(data);
+
+      data.map((prayer: IPrayers) => {
+        setTimeValue(prayer.prayer, prayer.time);
+      });
+    });
+  }, []);
+
+  async function fetchPrayersData() {
+    const { data } = await supabase.from("prayer_times_daily_tbl").select();
+    if (data !== null) {
+      return data[0].prayer_times;
+    }
+  }
 
   // handlers
   const onSaveCLick = () => {
-    console.log("clicked");
-    setMode("view");
+    setMode(ScreenMode.view);
   };
   const onCancelClick = () => {
-    console.log("clicked");
-    setMode("view");
+    setMode(ScreenMode.view);
   };
 
   const onEditClick = () => {
-    setMode("edit");
+    setMode(ScreenMode.edit);
+    dayjs(fajr, "HH:mm");
   };
 
-  const onTimeValueChanged = (newValue: string, prayer: string) => {
+  const setTimeValue = (newValue: string, prayer: string) => {
     switch (prayer) {
       case "fajr":
         setFajr(newValue);
@@ -53,6 +76,9 @@ function UpdatePrayerTimes() {
         break;
     }
   };
+  const onTimeValueChanged = (newValue: string, prayer: string) => {
+    setTimeValue(newValue, prayer);
+  };
 
   dayjs.extend(customParseFormat);
 
@@ -62,134 +88,35 @@ function UpdatePrayerTimes() {
         <h2>Edit prayer times</h2>
         <div className="disp-flex buttons">
           <div
-            className={`button ${mode === "view" ? "visible" : ""} `}
+            className={`button ${mode === ScreenMode.view ? "visible" : ""} `}
             onClick={onEditClick}
           >
             Edit
           </div>
           <div
-            className={`button ${mode === "edit" ? "visible" : ""} `}
+            className={`button ${mode === ScreenMode.edit ? "visible" : ""} `}
             onClick={onSaveCLick}
           >
             Save
           </div>
           <div
-            className={`button ${mode === "edit" ? "visible" : ""} `}
+            className={`button ${mode === ScreenMode.edit ? "visible" : ""} `}
             onClick={onCancelClick}
           >
             Cancel
           </div>
         </div>
         <div className="prayer-times">
-          <div className="disp-flex prayer">
-            <div className="prayer-title">Fajr</div>
-            <div
-              className={`prayer-text-area ${mode === "view" ? "visible" : ""}`}
-            >
-              {prayerJSON.fajr}
-            </div>
-            <LocalizationProvider dateAdapter={AdapterDayjs}>
-              <TimePicker
-                className={`prayer-text-area ${
-                  mode === "edit" ? "visible" : ""
-                }`}
-                value={dayjs(fajr, "HH:mm")}
-                ampm={false}
-                onChange={(newValue) => {
-                  if (newValue === null) return;
-                  onTimeValueChanged(
-                    `${newValue.hour()}:${newValue.minute()}`,
-                    "fajr"
-                  );
-                }}
-              ></TimePicker>
-            </LocalizationProvider>
-          </div>
-          <div className="disp-flex prayer">
-            <div className="prayer-title">Dhuhr</div>
-            <div
-              className={`prayer-text-area ${mode === "view" ? "visible" : ""}`}
-            >
-              {prayerJSON.dhuhr}
-            </div>
-            <LocalizationProvider dateAdapter={AdapterDayjs}>
-              <TimePicker
-                className={`prayer-text-area ${
-                  mode === "edit" ? "visible" : ""
-                }`}
-                value={dayjs(dhuhr, "HH:mm")}
-                ampm={false}
-              ></TimePicker>
-            </LocalizationProvider>
-          </div>
-          <div className="disp-flex prayer">
-            <div className="prayer-title">Asr</div>
-            <div
-              className={`prayer-text-area ${mode === "view" ? "visible" : ""}`}
-            >
-              {prayerJSON.asr}
-            </div>
-            <LocalizationProvider dateAdapter={AdapterDayjs}>
-              <TimePicker
-                className={`prayer-text-area ${
-                  mode === "edit" ? "visible" : ""
-                }`}
-                value={dayjs(asr, "HH:mm")}
-                ampm={false}
-              ></TimePicker>
-            </LocalizationProvider>
-          </div>
-          <div className="disp-flex prayer">
-            <div className="prayer-title">Maghreb</div>
-            <div
-              className={`prayer-text-area ${mode === "view" ? "visible" : ""}`}
-            >
-              {prayerJSON.maghreb}
-            </div>
-            <LocalizationProvider dateAdapter={AdapterDayjs}>
-              <TimePicker
-                className={`prayer-text-area ${
-                  mode === "edit" ? "visible" : ""
-                }`}
-                value={dayjs(maghreb, "HH:mm")}
-                ampm={false}
-              ></TimePicker>
-            </LocalizationProvider>
-          </div>
-          <div className="disp-flex prayer">
-            <div className="prayer-title">Isha</div>
-            <div
-              className={`prayer-text-area ${mode === "view" ? "visible" : ""}`}
-            >
-              {prayerJSON.isha}
-            </div>
-            <LocalizationProvider dateAdapter={AdapterDayjs}>
-              <TimePicker
-                className={`prayer-text-area ${
-                  mode === "edit" ? "visible" : ""
-                }`}
-                value={dayjs(isha, "HH:mm")}
-                ampm={false}
-              ></TimePicker>
-            </LocalizationProvider>
-          </div>
-          <div className="disp-flex prayer">
-            <div className="prayer-title">Jummah</div>
-            <div
-              className={`prayer-text-area ${mode === "view" ? "visible" : ""}`}
-            >
-              {prayerJSON.jummah}
-            </div>
-            <LocalizationProvider dateAdapter={AdapterDayjs}>
-              <TimePicker
-                className={`prayer-text-area ${
-                  mode === "edit" ? "visible" : ""
-                }`}
-                value={dayjs(jummah, "HH:mm")}
-                ampm={false}
-              ></TimePicker>
-            </LocalizationProvider>
-          </div>
+          {prayersData.map((prayer: IPrayers) => (
+            <UpdatePrayerTimesComponent
+              prayer={prayer.prayer}
+              time={prayer.time}
+              mode={mode}
+              onTimeValueChanged={(newValue: string) =>
+                onTimeValueChanged(newValue, "")
+              }
+            />
+          ))}
         </div>
       </div>
     </div>

@@ -4,5 +4,10 @@ export interface INews {
     date: string,
     content: string,
     img: string[],
-    visible: boolean
+    visible: boolean,
 };
+
+export interface IPrayers {
+    prayer: string;
+    time: string;
+}

@@ -1,19 +1,38 @@
-import React, { useContext, useEffect } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 
+import { supabase } from "../supabase";
 import { HeaderContext, HeaderContextType } from "../styles/HeaderContext";
 import NewsComponent from "../components/NewsComponent";
-import newsJSON from "../assets/json/news.json";
+import { INews } from "../common/Interfaces";
 import { PAGE_NAMES } from "../common/Const";
 
 function News() {
   // useContext
   const { updateActiveTab } = useContext(HeaderContext) as HeaderContextType;
 
+  // useState
+  const [newsData, setNewsData] = useState([] as INews[]);
+
   // useEffect
   useEffect(() => {
     updateActiveTab(PAGE_NAMES.news);
+
+    fetchNewsData();
   }, []);
+
+  async function fetchNewsData() {
+    const { data } = await supabase
+      .from("news_tbl")
+      .select()
+      .filter("visible", "eq", "true")
+      .order("id", { ascending: false })
+      .limit(5);
+    if (data !== null) {
+      setNewsData(data);
+      console.log(data);
+    }
+  }
 
   // useParams
   const { id } = useParams();
@@ -21,7 +40,7 @@ function News() {
 
   // fetch and show the news entry, if there is URL parameter id
   if (id) {
-    newsEntry = newsJSON.news.find((news) => news.id === Number(id)) || null;
+    newsEntry = newsData.find((news) => news.id === Number(id)) || null;
 
     return newsEntry ? (
       <div className="page-container">
