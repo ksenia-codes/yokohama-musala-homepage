@@ -22,7 +22,7 @@ dayjs.extend(customParseFormat);
 function UpdatePrayerTimesComponent(props: Props) {
   return (
     <div className="disp-flex prayer">
-      <div className="prayer-title">{props.prayer}</div>
+      <h4 className="prayer-title">{props.prayer}</h4>
       <div
         className={`prayer-text-area ${
           props.mode === ScreenMode.view ? "visible" : ""

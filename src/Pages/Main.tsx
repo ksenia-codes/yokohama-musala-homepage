@@ -1,7 +1,10 @@
 import React, { useContext, useEffect } from "react";
 
 // components
-import { HeaderContext, HeaderContextType } from "../styles/HeaderContext";
+import {
+  HeaderContext,
+  HeaderContextType,
+} from "../common/context/HeaderContext";
 import { PAGE_NAMES } from "../common/Const";
 import AboutUsComponent from "../components/AboutUsComponent";
 import NewsComponent from "../components/NewsComponent";

@@ -456,10 +456,12 @@ footer {
   h2 {
     display: flex;
     justify-content: center;
+
+    margin-top: 0;
   }
 }
 .admin-page-content {
-  padding: 0 5rem;
+  padding: 1rem 5rem;
 }
 
 .admin-main-section {
@@ -486,16 +488,18 @@ footer {
   background-color: var(--bg-color-main);
 }
 
-.upd-prayer-times .buttons {
+.admin-page-content .buttons {
   justify-content: center;
 
   .button {
     margin: 0 1rem;
 
+    display: flex;
+    justify-content: center;
+    align-items: center;    
+
     width: 75px;
     height: 35px;
-
-    display: none;
 
     background-color: var(--bg-color-secondary-100);
     border: 2px var(--bg-color-secondary-100) solid;
@@ -508,12 +512,63 @@ footer {
     background-color: var(--bg-color-secondary-200);
     color: var(--bg-color-secondary-100);
   }
+}
+.upd-prayer-times .buttons {
+  .button {
+    display: none;
+
+  }
   .visible {
     display: flex;
     justify-content: center;
     align-items: center;    
   }
 }
+/* Update news list */
+.upd-news-list {
+  .news-entry-date,
+  .news-entry-title,
+  .buttons {
+    flex:30%;
+
+    display: flex;
+    align-items: center;
+  }
+
+  .news-entries {
+    padding: 0.75rem 0;
+    transition: background 300ms;
+  }  
+  .news-entries:hover {
+    background-color: var(--bg-color-main);
+    transition: background 700ms;
+  }
+
+  .buttons .add {
+    margin: 0.75rem 0;
+  }
+}
+/* udpate news entry */
+.upd-news-entry {
+  .upd-entry-section {
+    display: flex;
+
+    margin: 0.5rem 0;
+
+    .section-title {
+      flex: 20%;
+    }
+    .section-input {
+      flex: 50%;
+    }
+  }
+
+  .buttons {
+    margin: 1rem 0 0 0;
+  }
+}
+
+/* update prayer times */
 .upd-prayer-times {
 
   .prayer-times {
@@ -596,6 +651,11 @@ footer {
   }
   .main-about-us-address {
     margin: 0.5rem 0;
+  }
+
+  /* admin */
+  .upd-entry-section {
+    flex-direction: column;
   }
 }
 

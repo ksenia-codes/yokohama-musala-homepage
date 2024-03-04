@@ -2,7 +2,10 @@ import React, { useContext, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 
 import { supabase } from "../supabase";
-import { HeaderContext, HeaderContextType } from "../styles/HeaderContext";
+import {
+  HeaderContext,
+  HeaderContextType,
+} from "../common/context/HeaderContext";
 import NewsComponent from "../components/NewsComponent";
 import { INews } from "../common/Interfaces";
 import { PAGE_NAMES } from "../common/Const";
@@ -53,9 +56,15 @@ function News() {
           })}
         </div>
         <div className="news-entry-content">{newsEntry.content}</div>
-        {newsEntry.img.map((image) => (
-          <img className="news-entry-image" src={image} alt="" key={image} />
-        ))}
+        {newsEntry.img &&
+          newsEntry.img.map((image) => (
+            <img
+              className="news-entry-image"
+              src={image.imgPath}
+              alt=""
+              key={image.imgName}
+            />
+          ))}
       </div>
     ) : (
       <div className="news-container">The news entry does not exist</div>

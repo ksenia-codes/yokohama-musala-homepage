@@ -12,10 +12,15 @@ import Access from "./Access";
 import AdminMain from "./Admin/AdminMain";
 import UpdatePrayerTimes from "./Admin/UpdatePrayerTimes";
 import UpdateNewsList from "./Admin/UpdateNewsList";
+import UpdateNewsEntry from "./Admin/UpdateNewsEntry";
 import FooterComponent from "../components/FooterComponent";
-import { HeaderProvider } from "../styles/HeaderContext";
+import { HeaderProvider } from "../common/context/HeaderContext";
 
 function Page() {
+  enum ScreenMode {
+    edit = "edit",
+    add = "add",
+  }
   return (
     <Router>
       <HeaderProvider>
@@ -36,7 +41,14 @@ function Page() {
               element={<UpdatePrayerTimes />}
             ></Route>
             <Route path="/admin/news" element={<UpdateNewsList />}></Route>
-            <Route path="/admin/news:id" element={<UpdateNewsList />}></Route>
+            <Route
+              path="/admin/news/:id"
+              element={<UpdateNewsEntry mode={ScreenMode.edit} />}
+            ></Route>
+            <Route
+              path="/admin/news/add"
+              element={<UpdateNewsEntry mode={ScreenMode.add} />}
+            ></Route>
           </Routes>
         </div>
         <FooterComponent></FooterComponent>

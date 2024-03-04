@@ -1,7 +1,10 @@
 import React, { useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 
-import { HeaderContext, HeaderContextType } from "../styles/HeaderContext";
+import {
+  HeaderContext,
+  HeaderContextType,
+} from "../common/context/HeaderContext";
 import { PAGE_NAMES } from "../common/Const";
 import logo from "../images/yokohama_musala_logo.png";
 
