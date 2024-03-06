@@ -1,1 +1,1 @@
-export const PAGE_NAMES = { aboutUs: "", news: "news", services: "services", prayerTimes: "prayertimes", contact: "contact", access: "access" };
+export const PAGE_NAMES = { home: "", news: "news", services: "services", prayerTimes: "prayertimes", contact: "contact", access: "access", admin: "admin", adminNews: "admin/news", adminPrayers: "admin/prayertimes" };

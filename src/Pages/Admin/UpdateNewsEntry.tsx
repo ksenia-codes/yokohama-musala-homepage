@@ -8,6 +8,8 @@ import dayjs from "dayjs";
 import { Input } from "@mui/material";
 
 import { supabase } from "../../supabase";
+import { Session } from "@supabase/supabase-js";
+import Login from "../Login";
 import { INews, INewsImages } from "../../common/Interfaces";
 
 enum ScreenMode {
@@ -21,6 +23,7 @@ type Props = {
 
 function UpdateNewsEntry({ mode }: Props) {
   // useState
+  const [session, setSession] = useState<Session | null>(null);
   const [newsData, setNewsData] = useState({} as INews);
   const [filesToUpload, setFilesToUpload] = useState<FileList>();
   const [filesToDelete, setFilesToDelete] = useState([] as string[]);
@@ -50,6 +53,14 @@ function UpdateNewsEntry({ mode }: Props) {
 
   // useEffect
   useEffect(() => {
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      setSession(session);
+    });
+
+    supabase.auth.onAuthStateChange((_event, session) => {
+      setSession(session);
+    });
+
     // updateActiveTab(PAGE_NAMES.news);
 
     if (mode === ScreenMode.edit) {
@@ -190,12 +201,6 @@ function UpdateNewsEntry({ mode }: Props) {
     return { data, error };
   };
 
-  const addFiles = async () => {
-    console.log(newImages);
-    setNewsData({ ...newsData, img: newsData.img.concat(newImages) });
-    console.log(newsData);
-  };
-
   const insertData = async (data: INews) => {
     const { error } = await supabase.from("news_tbl").insert(data);
 
@@ -219,7 +224,7 @@ function UpdateNewsEntry({ mode }: Props) {
     navigate("/admin/news");
   };
 
-  return (
+  return session ? (
     <div className="admin-page-container">
       <div className="admin-page-content upd-news-entry">
         {mode === ScreenMode.edit ? (
@@ -320,6 +325,8 @@ function UpdateNewsEntry({ mode }: Props) {
         </div>
       </div>
     </div>
+  ) : (
+    <Login />
   );
 }
 

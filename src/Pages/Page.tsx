@@ -13,6 +13,7 @@ import AdminMain from "./Admin/AdminMain";
 import UpdatePrayerTimes from "./Admin/UpdatePrayerTimes";
 import UpdateNewsList from "./Admin/UpdateNewsList";
 import UpdateNewsEntry from "./Admin/UpdateNewsEntry";
+import Login from "./Login";
 import FooterComponent from "../components/FooterComponent";
 import { HeaderProvider } from "../common/context/HeaderContext";
 
@@ -35,6 +36,7 @@ function Page() {
             <Route path="/contact" element={<Contact />}></Route>
             <Route path="/access" element={<Access />}></Route>
             {/* Admin menu ↓ */}
+            <Route path="/login" element={<Login />}></Route>
             <Route path="/admin" element={<AdminMain />}></Route>
             <Route
               path="/admin/prayertimes"

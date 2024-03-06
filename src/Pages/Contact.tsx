@@ -36,7 +36,7 @@ function Contact() {
           </div>
           <div>
             <h3>Email</h3>
-            <div>(yokohamamusala@gmail.com)</div>
+            <div>yokohamamusala@gmail.com</div>
           </div>
         </div>
       </div>

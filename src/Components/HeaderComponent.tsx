@@ -1,20 +1,29 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
-import {
-  HeaderContext,
-  HeaderContextType,
-} from "../common/context/HeaderContext";
+import HeaderTabComponent from "./HeaderTabComponent";
+import AdminHeaderTabComponent from "./Admin/AdminHeaderTabComponent";
+import { supabase } from "../supabase";
+import { Session } from "@supabase/supabase-js";
 import { PAGE_NAMES } from "../common/Const";
 import logo from "../images/yokohama_musala_logo.png";
 
 function HeaderComponent() {
   // useState
+  const [session, setSession] = useState<Session | null>(null);
   const [visible, setVisible] = useState("");
   const [activeHamburger, setActiveHamburger] = useState("");
 
-  // useContext
-  const { activeTab } = useContext(HeaderContext) as HeaderContextType;
+  // useEffect
+  useEffect(() => {
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      setSession(session);
+    });
+
+    supabase.auth.onAuthStateChange((event, session) => {
+      setSession(session);
+    });
+  }, []);
 
   // handlers
   const handleHamburgerOnClick = () => {
@@ -25,6 +34,11 @@ function HeaderComponent() {
       setActiveHamburger("active");
       setVisible("visible");
     }
+  };
+
+  const handleSignOutOnClick = () => {
+    supabase.auth.signOut();
+    navigate("/");
   };
 
   // useNavigate
@@ -46,66 +60,58 @@ function HeaderComponent() {
           width={50}
         />
         <ul>
-          <li
-            className={`${
-              activeTab === PAGE_NAMES.aboutUs
-                ? "active hover-cursor"
-                : "hover-cursor"
-            }`}
-            onClick={() => handleHeaderTabOnClick(PAGE_NAMES.aboutUs)}
-          >
-            Home
-          </li>
-          <li
-            className={`${
-              activeTab === PAGE_NAMES.news
-                ? "active hover-cursor"
-                : "hover-cursor"
-            }`}
-            onClick={() => handleHeaderTabOnClick(PAGE_NAMES.news)}
-          >
-            News
-          </li>
-          <li
-            className={`${
-              activeTab === PAGE_NAMES.services
-                ? "active hover-cursor"
-                : "hover-cursor"
-            }`}
-            onClick={() => handleHeaderTabOnClick(PAGE_NAMES.services)}
-          >
-            Services
-          </li>
-          <li
-            className={`${
-              activeTab === PAGE_NAMES.prayerTimes
-                ? "active hover-cursor"
-                : "hover-cursor"
-            }`}
-            onClick={() => handleHeaderTabOnClick(PAGE_NAMES.prayerTimes)}
-          >
-            Prayer Times
-          </li>
-          <li
-            className={`${
-              activeTab === PAGE_NAMES.contact
-                ? "active hover-cursor"
-                : "hover-cursor"
-            }`}
-            onClick={() => handleHeaderTabOnClick(PAGE_NAMES.contact)}
-          >
-            Contact
-          </li>
-          <li
-            className={`${
-              activeTab === PAGE_NAMES.access
-                ? "active hover-cursor"
-                : "hover-cursor"
-            }`}
-            onClick={() => handleHeaderTabOnClick(PAGE_NAMES.access)}
-          >
-            Access
-          </li>
+          <HeaderTabComponent
+            pageName={PAGE_NAMES.home}
+            tabName="Home"
+            onClick={handleHeaderTabOnClick}
+          />
+          <HeaderTabComponent
+            pageName={PAGE_NAMES.news}
+            tabName="News"
+            onClick={handleHeaderTabOnClick}
+          />
+          <HeaderTabComponent
+            pageName={PAGE_NAMES.services}
+            tabName="Services"
+            onClick={handleHeaderTabOnClick}
+          />
+          <HeaderTabComponent
+            pageName={PAGE_NAMES.prayerTimes}
+            tabName="Prayer Times"
+            onClick={handleHeaderTabOnClick}
+          />
+          <HeaderTabComponent
+            pageName={PAGE_NAMES.contact}
+            tabName="Contact"
+            onClick={handleHeaderTabOnClick}
+          />
+          <HeaderTabComponent
+            pageName={PAGE_NAMES.access}
+            tabName="Access"
+            onClick={handleHeaderTabOnClick}
+          />
+
+          <AdminHeaderTabComponent
+            pageName={PAGE_NAMES.admin}
+            tabName="Admin"
+            onClick={handleHeaderTabOnClick}
+            session={session}
+            children={[
+              <AdminHeaderTabComponent
+                pageName={PAGE_NAMES.adminNews}
+                tabName="Edit news"
+                onClick={handleHeaderTabOnClick}
+                session={session}
+              />,
+              <AdminHeaderTabComponent
+                pageName={PAGE_NAMES.adminPrayers}
+                tabName="Edit prayer times"
+                onClick={handleHeaderTabOnClick}
+                session={session}
+              />,
+              <li onClick={handleSignOutOnClick}>Sign out</li>,
+            ]}
+          />
         </ul>
         <div
           className={`hover-cursor topnav-hamburger ${activeHamburger}`}

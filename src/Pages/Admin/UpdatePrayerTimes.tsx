@@ -1,11 +1,18 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import dayjs from "dayjs";
 import customParseFormat from "dayjs/plugin/customParseFormat";
 
 import UpdatePrayerTimesComponent from "../../components/Admin/UpdatePrayerTimesComponent";
 
 import { supabase } from "../../supabase";
+import { Session } from "@supabase/supabase-js";
+import Login from "../Login";
 import { IPrayers } from "../../common/Interfaces";
+import {
+  HeaderContext,
+  HeaderContextType,
+} from "../../common/context/HeaderContext";
+import { PAGE_NAMES } from "../../common/Const";
 
 function UpdatePrayerTimes() {
   enum ScreenMode {
@@ -22,7 +29,11 @@ function UpdatePrayerTimes() {
     jummah = "Jummah",
   }
 
+  // useContext
+  const { updateActiveTab } = useContext(HeaderContext) as HeaderContextType;
+
   // useState
+  const [session, setSession] = useState<Session | null>(null);
   const [prayersData, setPrayersData] = useState([] as IPrayers[]);
   const [mode, setMode] = useState(ScreenMode.view);
   const [fajr, setFajr] = useState("");
@@ -34,9 +45,19 @@ function UpdatePrayerTimes() {
 
   // useEffect
   useEffect(() => {
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      setSession(session);
+    });
+
+    supabase.auth.onAuthStateChange((_event, session) => {
+      setSession(session);
+    });
+
+    updateActiveTab(PAGE_NAMES.admin);
+
     fetchPrayersData().then((data) => {
       setPrayersData(data);
-      data.map((prayer: IPrayers) => {
+      prayersData.forEach((prayer: IPrayers) => {
         setTimeValue(prayer.prayer, prayer.time);
       });
     });
@@ -115,7 +136,7 @@ function UpdatePrayerTimes() {
 
   dayjs.extend(customParseFormat);
 
-  return (
+  return session ? (
     <div className="admin-page-container">
       <div className="admin-page-content upd-prayer-times">
         <h2>Edit prayer times</h2>
@@ -154,6 +175,8 @@ function UpdatePrayerTimes() {
         </div>
       </div>
     </div>
+  ) : (
+    <Login />
   );
 }
 

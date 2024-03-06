@@ -1,22 +1,27 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useContext, useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 import { supabase } from "../../supabase";
+import { Session } from "@supabase/supabase-js";
+import Login from "../Login";
 import { INews } from "../../common/Interfaces";
 import { PaginationComponent } from "../../components/PaginationComponent";
+import {
+  HeaderContext,
+  HeaderContextType,
+} from "../../common/context/HeaderContext";
 import { PAGE_NAMES } from "../../common/Const";
 
 function UpdateNewsList() {
-  enum ScreenMode {
-    edit = "edit",
-    add = "add",
-  }
-
-  // useState
-  const [newsData, setNewsData] = useState([] as INews[]);
+  // useContext
+  const { updateActiveTab } = useContext(HeaderContext) as HeaderContextType;
 
   // useNavigate
   let navigate = useNavigate();
+
+  // useState
+  const [session, setSession] = useState<Session | null>(null);
+  const [newsData, setNewsData] = useState([] as INews[]);
 
   const handleEditOnClick = (news: INews) => {
     navigate(`/admin/news/${news.id}`);
@@ -27,6 +32,16 @@ function UpdateNewsList() {
 
   // useEffect
   useEffect(() => {
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      setSession(session);
+    });
+
+    supabase.auth.onAuthStateChange((_event, session) => {
+      setSession(session);
+    });
+
+    updateActiveTab(PAGE_NAMES.admin);
+
     fetchNewsData().then((data) => {
       if (data) {
         setNewsData(data);
@@ -53,7 +68,7 @@ function UpdateNewsList() {
     return newsData.slice(firstPageIndex, lastPageIndex);
   }, [currentPage, PageSize, newsData]);
 
-  return (
+  return session ? (
     <div className="admin-page-container">
       <div className="admin-page-content upd-news-list">
         <h2>Add or edit news & upates</h2>
@@ -84,7 +99,16 @@ function UpdateNewsList() {
           </div>
         </div>
       </div>
+      <PaginationComponent
+        className="pagination-bar"
+        currentPage={currentPage}
+        totalCount={newsData.length}
+        pageSize={PageSize}
+        onPageChange={(page: number) => setCurrentPage(page)}
+      />
     </div>
+  ) : (
+    <Login />
   );
 }
 

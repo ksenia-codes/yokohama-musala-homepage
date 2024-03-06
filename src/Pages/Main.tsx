@@ -20,7 +20,7 @@ function Main() {
 
   // useEffect
   useEffect(() => {
-    updateActiveTab(PAGE_NAMES.aboutUs);
+    updateActiveTab(PAGE_NAMES.home);
   }, []);
 
   return (
@@ -39,7 +39,7 @@ function Main() {
           <NewsComponent
             containerClassName="main-section"
             className="main-section-news"
-            pageName={PAGE_NAMES.aboutUs}
+            pageName={PAGE_NAMES.home}
           />
         </div>
         <div className="main-container-right">
