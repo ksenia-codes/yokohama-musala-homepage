@@ -30,9 +30,8 @@ function AdminHeaderTabComponent({
       }
       ${session ? "" : "hidden"}
       admin-tab`}
-      onClick={() => onClick(pageName)}
     >
-      {tabName}
+      <span onClick={() => onClick(pageName)}>{tabName}</span>
       <ul className="">{children}</ul>
     </li>
   ) : (
