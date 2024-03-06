@@ -26,8 +26,32 @@ function UpdateNewsList() {
   const handleEditOnClick = (news: INews) => {
     navigate(`/admin/news/${news.id}`);
   };
+
   const handleAddOnClick = () => {
     navigate("/admin/news/add");
+  };
+
+  const handleDeleteOnClick = (id: number) => {
+    if (
+      window.confirm(
+        "The news entry will be deleted permanently.\nAre you sure, you want to delete it?"
+      )
+    ) {
+      // remove from db
+      deleteEntry(id).then((deleted) => {
+        if (deleted) {
+          setNewsData(newsData.filter((data) => data.id !== id));
+        }
+      });
+    }
+  };
+  const deleteEntry = async (id: number) => {
+    const { error } = await supabase.from("news_tbl").delete().eq("id", id);
+    if (error?.message) {
+      console.log(error.message);
+      return false;
+    }
+    return true;
   };
 
   // useEffect
@@ -89,7 +113,12 @@ function UpdateNewsList() {
               >
                 Edit
               </div>
-              <div className="delete button">Delete</div>
+              <div
+                className="delete button"
+                onClick={() => news.id && handleDeleteOnClick(news.id)}
+              >
+                Delete
+              </div>
             </div>
           </div>
         ))}

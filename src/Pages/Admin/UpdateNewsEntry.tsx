@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
@@ -11,6 +11,11 @@ import { supabase } from "../../supabase";
 import { Session } from "@supabase/supabase-js";
 import Login from "../Login";
 import { INews, INewsImages } from "../../common/Interfaces";
+import {
+  HeaderContext,
+  HeaderContextType,
+} from "../../common/context/HeaderContext";
+import { PAGE_NAMES } from "../../common/Const";
 
 enum ScreenMode {
   edit = "edit",
@@ -22,6 +27,9 @@ type Props = {
 };
 
 function UpdateNewsEntry({ mode }: Props) {
+  // useContext
+  const { updateActiveTab } = useContext(HeaderContext) as HeaderContextType;
+
   // useState
   const [session, setSession] = useState<Session | null>(null);
   const [newsData, setNewsData] = useState({} as INews);
@@ -61,7 +69,7 @@ function UpdateNewsEntry({ mode }: Props) {
       setSession(session);
     });
 
-    // updateActiveTab(PAGE_NAMES.news);
+    updateActiveTab(PAGE_NAMES.admin);
 
     if (mode === ScreenMode.edit) {
       fetchNewsData();
@@ -230,7 +238,7 @@ function UpdateNewsEntry({ mode }: Props) {
         {mode === ScreenMode.edit ? (
           <h2>Edit news entry</h2>
         ) : (
-          <h2>Create a new news entry</h2>
+          <h2>Create a news entry</h2>
         )}
         <div className="upd-entry-section">
           <h4 className="section-title">Title</h4>
