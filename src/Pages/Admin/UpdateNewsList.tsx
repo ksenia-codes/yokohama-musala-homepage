@@ -53,7 +53,7 @@ function UpdateNewsList() {
     const { data } = await supabase
       .from("news_tbl")
       .select()
-      .order("id", { ascending: false });
+      .order("date", { ascending: false });
     return data;
   };
 

@@ -25,7 +25,7 @@ function NewsComponent({ containerClassName, className, pageName }: Props) {
       .from("news_tbl")
       .select()
       .filter("visible", "eq", "true")
-      .order("id", { ascending: false });
+      .order("date", { ascending: false });
     if (data !== null) {
       setNewsData(data);
       console.log(data);

@@ -29,7 +29,7 @@ function News() {
       .from("news_tbl")
       .select()
       .filter("visible", "eq", "true")
-      .order("id", { ascending: false })
+      .order("date", { ascending: false })
       .limit(5);
     if (data !== null) {
       setNewsData(data);
