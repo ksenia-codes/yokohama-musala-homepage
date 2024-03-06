@@ -20,9 +20,6 @@ function Login() {
 
     if (error) {
       alert(error.message);
-    } else {
-      //   localStorage.setItem("supabaseSession", JSON.stringify(data));
-      console.log("success!");
     }
     setLoading(false);
   };

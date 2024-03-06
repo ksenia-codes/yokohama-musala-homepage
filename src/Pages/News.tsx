@@ -29,11 +29,9 @@ function News() {
       .from("news_tbl")
       .select()
       .filter("visible", "eq", "true")
-      .order("date", { ascending: false })
-      .limit(5);
+      .order("date", { ascending: false });
     if (data !== null) {
       setNewsData(data);
-      console.log(data);
     }
   }
 
@@ -46,7 +44,7 @@ function News() {
     newsEntry = newsData.find((news) => news.id === Number(id)) || null;
 
     return newsEntry ? (
-      <div className="page-container">
+      <div className="page-container news">
         <h2>{newsEntry.title}</h2>
         <div className="news-entry-date">
           {new Date(newsEntry.date).toLocaleDateString("en-US", {

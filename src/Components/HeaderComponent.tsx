@@ -98,18 +98,22 @@ function HeaderComponent() {
             session={session}
             children={[
               <AdminHeaderTabComponent
+                key={PAGE_NAMES.adminNews}
                 pageName={PAGE_NAMES.adminNews}
                 tabName="Edit news"
                 onClick={handleHeaderTabOnClick}
                 session={session}
               />,
               <AdminHeaderTabComponent
+                key={PAGE_NAMES.adminPrayers}
                 pageName={PAGE_NAMES.adminPrayers}
                 tabName="Edit prayer times"
                 onClick={handleHeaderTabOnClick}
                 session={session}
               />,
-              <li onClick={handleSignOutOnClick}>Sign out</li>,
+              <li key={"signout"} onClick={handleSignOutOnClick}>
+                Sign out
+              </li>,
             ]}
           />
         </ul>

@@ -25,7 +25,10 @@ function PrayerTimesTodayComponent() {
       {prayersData
         .filter((prayer) => prayer.prayer !== "Jummah")
         .map((prayer) => (
-          <div className="disp-flex main-section-prayer-time">
+          <div
+            className="disp-flex main-section-prayer-time"
+            key={prayer.prayer}
+          >
             <div className="main-section-prayer">{prayer.prayer}</div>
             <div className="main-section-time">{prayer.time}</div>
           </div>
@@ -33,7 +36,7 @@ function PrayerTimesTodayComponent() {
       {prayersData
         .filter((prayer) => prayer.prayer === "Jummah")
         .map((prayer) => (
-          <div className="disp-flex jummah-time-container">
+          <div className="disp-flex jummah-time-container" key={prayer.prayer}>
             <div className="main-section-prayer">{prayer.prayer}</div>
             <div className="main-section-time">{prayer.time}</div>
           </div>

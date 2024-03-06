@@ -143,7 +143,6 @@ function UpdateNewsEntry({ mode }: Props) {
     // update/insert the newsData
     setTimeout(() => {
       const dataForDb = { ...newsData, img: newImages };
-      console.log(dataForDb, "before db");
 
       if (mode === ScreenMode.add) {
         // insert
@@ -194,11 +193,9 @@ function UpdateNewsEntry({ mode }: Props) {
       .from("news_images")
       .getPublicUrl(file.name).data.publicUrl;
     // add to array of INewsImage objects
-    console.log(newImages, 1);
     newImages
       ? newImages.push({ imgName: file.name, imgPath: publicUrl })
       : (newImages = [{ imgName: file.name, imgPath: publicUrl }]);
-    console.log(newImages, 2);
   };
 
   const deleteFiles = async () => {

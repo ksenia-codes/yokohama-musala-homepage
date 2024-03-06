@@ -28,7 +28,6 @@ function NewsComponent({ containerClassName, className, pageName }: Props) {
       .order("date", { ascending: false });
     if (data !== null) {
       setNewsData(data);
-      console.log(data);
     }
   }
 

@@ -415,6 +415,16 @@ footer {
   h3, h2 {
     margin: 0.5rem 1.5rem;
   }
+
+  .news-entry-date {
+    display: block;
+    float: left;
+  }
+}
+.page-container.news {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
 }
 .page-content-container {
   padding: 0.75rem 1.5rem;
@@ -441,6 +451,10 @@ footer {
   padding: 0.25rem 1.5rem;
   
   white-space: pre-wrap;
+}
+.news-entry-image {
+  width: 90%;
+  height: auto;
 }
 
 /* pagination */
@@ -492,6 +506,12 @@ footer {
 .prayer-timetable-container {
   flex-direction: column;
   align-items: center;
+    
+  .inner-contents {
+    display: flex;
+    flex-direction: column;
+    align-items: center;    
+  }
 }
 .prayer-timetable-month-arrow:hover {
   color: var(--bg-color-secondary-100);
@@ -500,8 +520,6 @@ footer {
   border-collapse: collapse;
 
   text-align: center;
-
-  width: 50%;
   thead {
     background-color: var(--bg-color-secondary-100);
     color: #ffffff;
