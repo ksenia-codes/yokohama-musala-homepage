@@ -271,7 +271,9 @@ function UpdateNewsEntry({ mode }: Props) {
         <div className="upd-entry-section">
           <h4 className="section-title">Images</h4>
           <div className="disp-flex images" style={{ flexDirection: "column" }}>
-            <div className="">Uploaded files</div>
+            <div className="">
+              Uploaded files: {newsData.img ? newsData.img.length : 0} files
+            </div>
             {newsData.img &&
               newsData.img.map((img) => (
                 <div
@@ -303,7 +305,6 @@ function UpdateNewsEntry({ mode }: Props) {
               <Input
                 type="file"
                 inputProps={{ multiple: true, accept: "image/*" }}
-                // style={{ display: "none" }}
                 onChange={onFileSelectChange}
               />
             </Button>
@@ -312,7 +313,7 @@ function UpdateNewsEntry({ mode }: Props) {
         <div className="upd-entry-section">
           <h4 className="section-title">Visible</h4>
           <input
-            className="section-input"
+            className="section-input checkbox"
             type="checkbox"
             name="visible-flg"
             checked={newsData.visible}
