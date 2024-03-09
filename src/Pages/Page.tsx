@@ -2,7 +2,7 @@ import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
 // pages and components
-import HeaderComponent from "../components/HeaderComponent";
+import HeaderComponent from "../Components/HeaderComponent";
 import Main from "./Main";
 import News from "./News";
 import Services from "./Services";
@@ -14,7 +14,7 @@ import UpdatePrayerTimes from "./Admin/UpdatePrayerTimes";
 import UpdateNewsList from "./Admin/UpdateNewsList";
 import UpdateNewsEntry from "./Admin/UpdateNewsEntry";
 import Login from "./Login";
-import FooterComponent from "../components/FooterComponent";
+import FooterComponent from "../Components/FooterComponent";
 import { HeaderProvider } from "../common/context/HeaderContext";
 
 function Page() {
