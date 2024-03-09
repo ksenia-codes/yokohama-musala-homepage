@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from "react";
 import dayjs from "dayjs";
 import customParseFormat from "dayjs/plugin/customParseFormat";
 
-import UpdatePrayerTimesComponent from "../../components/Admin/UpdatePrayerTimesComponent";
+import UpdatePrayerTimesComponent from "../../Components/Admin/UpdatePrayerTimesComponent";
 
 import { supabase } from "../../supabase";
 import { Session } from "@supabase/supabase-js";

@@ -6,7 +6,7 @@ import {
   HeaderContext,
   HeaderContextType,
 } from "../common/context/HeaderContext";
-import NewsComponent from "../components/NewsComponent";
+import NewsComponent from "../Components/NewsComponent";
 import { INews } from "../common/Interfaces";
 import { PAGE_NAMES } from "../common/Const";
 

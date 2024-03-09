@@ -6,11 +6,11 @@ import {
   HeaderContextType,
 } from "../common/context/HeaderContext";
 import { PAGE_NAMES } from "../common/Const";
-import AboutUsComponent from "../components/AboutUsComponent";
-import NewsComponent from "../components/NewsComponent";
-import CurrentDateComponent from "../components/CurrentdateComponent";
-import PrayerTimesTodayComponent from "../components/PrayerTimesTodayComponent";
-import DonationsComponent from "../components/DonationsComponent";
+import AboutUsComponent from "../Components/AboutUsComponent";
+import NewsComponent from "../Components/NewsComponent";
+import CurrentDateComponent from "../Components/CurrentdateComponent";
+import PrayerTimesTodayComponent from "../Components/PrayerTimesTodayComponent";
+import DonationsComponent from "../Components/DonationsComponent";
 
 import musalaMainImage from "../images/yokohama_musala_inside.png";
 

@@ -5,7 +5,7 @@ import { supabase } from "../../supabase";
 import { Session } from "@supabase/supabase-js";
 import Login from "../Login";
 import { INews } from "../../common/Interfaces";
-import { PaginationComponent } from "../../components/PaginationComponent";
+import { PaginationComponent } from "../../Components/PaginationComponent";
 import {
   HeaderContext,
   HeaderContextType,
