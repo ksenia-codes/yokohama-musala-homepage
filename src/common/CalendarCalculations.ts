@@ -148,7 +148,6 @@ export function writeGregorianDate() {
 
     const wdNames = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 
-    console.log(today.getDay());
     let outputGregorianDate = `${monthNames[today.getMonth()]
         } ${today.getDate()}, ${today.getFullYear()} (${wdNames[today.getDay()]})`;
     return outputGregorianDate;
