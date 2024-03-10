@@ -453,8 +453,13 @@ footer {
   
   white-space: pre-wrap;
 }
+.news-entry-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
 .news-entry-image {
-  width: 90%;
+  width: 100%;
   height: auto;
 }
 
@@ -537,6 +542,19 @@ footer {
 
   .prayer-time-today {
     background-color: var(--bg-color-main);
+  }
+}
+
+/* contact */
+.contact-section {
+  margin-top: 1.25rem;
+
+  .contact-title {
+    align-items: center;
+
+    h3 {
+      margin-left: 0.25rem;
+    }
   }
 }
 
@@ -675,6 +693,9 @@ footer {
   .prayer-times {
     padding: 0 10%;
 
+    flex-direction: column;
+    align-items: space-between;
+
     font-size: 18px;
   }
   .prayer {
@@ -682,7 +703,7 @@ footer {
   }
 
   .prayer-title {
-    flex: 10%;
+    flex: 50%;
     display: flex;
     align-items: center;
   }
@@ -691,8 +712,8 @@ footer {
   }
   .prayer-text-area.visible {
     display: flex;
-    flex: 70%;
-    justify-content: center;
+    flex-direction: row;
+    justify-content: right;
     align-items: center;    
   }
   
@@ -790,13 +811,18 @@ footer {
 
     padding: 0 3%;
   }
-
-  /* update prayer times */
-  .prayer-title {
-  }
-  .prayer-text-area.visible {
-  }
 }
 
-/* @media screen and (min-width: 760px) {
-  } */
+@media screen and (max-width: 300px) {
+  .upd-prayer-times {
+    .prayer {
+      margin-bottom: 0;
+
+      flex-direction: column;
+
+      .prayer-title {
+        margin-bottom: 0;
+      }
+    }
+  }
+}

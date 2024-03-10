@@ -53,16 +53,18 @@ function News() {
             day: "numeric",
           })}
         </div>
-        <div className="news-entry-content">{newsEntry.content}</div>
-        {newsEntry.img &&
-          newsEntry.img.map((image) => (
-            <img
-              className="news-entry-image"
-              src={image.imgPath}
-              alt=""
-              key={image.imgName}
-            />
-          ))}
+        <div className="news-entry-content">
+          {newsEntry.content}
+          {newsEntry.img &&
+            newsEntry.img.map((image) => (
+              <img
+                className="news-entry-image"
+                src={image.imgPath}
+                alt=""
+                key={image.imgName}
+              />
+            ))}
+        </div>
       </div>
     ) : (
       <div className="news-container">The news entry does not exist</div>

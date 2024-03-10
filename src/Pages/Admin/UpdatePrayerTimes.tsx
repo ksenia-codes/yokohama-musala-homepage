@@ -160,7 +160,7 @@ function UpdatePrayerTimes() {
             Cancel
           </div>
         </div>
-        <div className="prayer-times">
+        <div className="disp-flex prayer-times">
           {prayersData.map((prayer: IPrayers) => (
             <UpdatePrayerTimesComponent
               prayer={prayer.prayer}
