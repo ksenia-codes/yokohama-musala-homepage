@@ -1,9 +1,9 @@
-import React, { useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
+import { supabase } from "../supabase";
 import { PaginationComponent } from "./PaginationComponent";
-import { INews } from "../common/NewsInterface";
-import newsJSON from "../assets/json/news.json";
+import { INews } from "../common/Interfaces";
 import { PAGE_NAMES } from "../common/Const";
 
 interface Props {
@@ -13,17 +13,29 @@ interface Props {
 }
 
 function NewsComponent({ containerClassName, className, pageName }: Props) {
+  const [newsData, setNewsData] = useState([] as INews[]);
+
+  // useEffect
+  useEffect(() => {
+    fetchNewsData();
+  }, []);
+
+  async function fetchNewsData() {
+    const { data } = await supabase
+      .from("news_tbl")
+      .select()
+      .filter("visible", "eq", "true")
+      .order("date", { ascending: false });
+    if (data !== null) {
+      setNewsData(data);
+    }
+  }
+
   // useNavigate
   let navigate = useNavigate();
   const handleNewsOnClick = (path: string, news: INews) => {
     navigate(path, { state: { newsEntry: news } });
   };
-
-  // retrieve and sort news by date (newest first)
-  const news = newsJSON.news.filter((a) => a.visible);
-  const sortedNews = news.sort(
-    (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
-  );
 
   // set pagination (for the news page)
   let PageSize = 10;
@@ -33,12 +45,12 @@ function NewsComponent({ containerClassName, className, pageName }: Props) {
     const firstPageIndex = (currentPage - 1) * PageSize;
     const lastPageIndex = firstPageIndex + PageSize;
 
-    return sortedNews.slice(firstPageIndex, lastPageIndex);
-  }, [currentPage]);
+    return newsData.slice(firstPageIndex, lastPageIndex);
+  }, [currentPage, PageSize, newsData]);
 
   // get the newest 5 (for the main page)
   const newToDisplay =
-    pageName === PAGE_NAMES.news ? currentData : sortedNews.slice(0, 5);
+    pageName === PAGE_NAMES.news ? currentData : newsData.slice(0, 5);
 
   return (
     <div className={`bg-color-div ${containerClassName}-container`}>
@@ -63,7 +75,7 @@ function NewsComponent({ containerClassName, className, pageName }: Props) {
         <PaginationComponent
           className="pagination-bar"
           currentPage={currentPage}
-          totalCount={sortedNews.length}
+          totalCount={newsData.length}
           pageSize={PageSize}
           onPageChange={(page: number) => setCurrentPage(page)}
         />

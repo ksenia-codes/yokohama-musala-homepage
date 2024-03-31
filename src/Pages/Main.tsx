@@ -1,13 +1,16 @@
 import React, { useContext, useEffect } from "react";
 
 // components
-import { HeaderContext, HeaderContextType } from "../styles/HeaderContext";
+import {
+  HeaderContext,
+  HeaderContextType,
+} from "../common/context/HeaderContext";
 import { PAGE_NAMES } from "../common/Const";
-import AboutUsComponent from "../components/AboutUsComponent";
-import NewsComponent from "../components/NewsComponent";
-import CurrentDateComponent from "../components/CurrentdateComponent";
-import PrayerTimesTodayComponent from "../components/PrayerTimesTodayComponent";
-import DonationsComponent from "../components/DonationsComponent";
+import AboutUsComponent from "../Components/AboutUsComponent";
+import NewsComponent from "../Components/NewsComponent";
+import CurrentDateComponent from "../Components/CurrentdateComponent";
+import PrayerTimesTodayComponent from "../Components/PrayerTimesTodayComponent";
+import DonationsComponent from "../Components/DonationsComponent";
 
 import musalaMainImage from "../images/yokohama_musala_inside.png";
 
@@ -17,7 +20,7 @@ function Main() {
 
   // useEffect
   useEffect(() => {
-    updateActiveTab(PAGE_NAMES.aboutUs);
+    updateActiveTab(PAGE_NAMES.home);
   }, []);
 
   return (
@@ -36,7 +39,7 @@ function Main() {
           <NewsComponent
             containerClassName="main-section"
             className="main-section-news"
-            pageName={PAGE_NAMES.aboutUs}
+            pageName={PAGE_NAMES.home}
           />
         </div>
         <div className="main-container-right">

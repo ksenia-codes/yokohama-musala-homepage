@@ -15,10 +15,10 @@
 
   --bg-color-main: rgba(255, 218, 181, 1);
   --bg-color-div: rgba(255, 255, 255, 0.8);
-  --bg-color-accent: rgba(255, 163, 69, 1);
-  --bg-color-accent-200: rgba(255, 163, 69, 0.5);
+  --bg-color-accent-100: rgba(255, 163, 69, 1);
+  --bg-color-accent-050: rgba(255, 163, 69, 0.5);
   --bg-color-secondary-100: rgba(129, 115, 106, 1);
-  --bg-color-secondary-200: rgba(217, 217, 217, 0.5);
+  --bg-color-secondary-050: rgba(217, 217, 217, 0.5);
 }
 
 body {
@@ -40,6 +40,9 @@ body {
 .disp-inline {
   display: inline;
 }
+.disp-none {
+  display: none;
+}
 
 .hover-cursor:hover {
   cursor: pointer;
@@ -54,7 +57,7 @@ body {
 }
 
 .content-wrap {
-  padding-bottom: 2.5rem;
+  padding-bottom: 10vh;
 }
 
 /* header */
@@ -67,15 +70,6 @@ header {
 }
 
 .logo {
-  /* padding: 10px; */
-  /* margin: 0.25rem 0; */
-
-  /* color: black; */
-  /* text-align: center;
-  text-decoration: none;
-  font-size: 17px; */
-  
-  /* border: black 1px solid; */
   border-radius: 10%;
 }
 
@@ -84,27 +78,63 @@ header {
 
   justify-content: space-evenly;
   align-items: center;
-}
-
-.topnav ul li {
-  margin: 0 0.75rem;
-
-  display: inline-block;
-
-  text-decoration: none;
-  font-size: var(--font-size-mid);
-
-  background-image: linear-gradient(#000 0 0);
-  background-position: left bottom;
-  background-size: 0% 2px;
-  background-repeat: no-repeat;
-  transition: background-size 0.5s;
   
+  li {
+    margin: 0 0.75rem;
+    
+    display: inline-block;
+  
+    text-decoration: none;
+    font-size: var(--font-size-mid);
+  
+    background-image: linear-gradient(#000 0 0);
+    background-position: left bottom;
+    background-size: 0% 2px;
+    background-repeat: no-repeat;
+    transition: background-size 0.5s;
+    
+  }
+  
+  li:hover,
+  li.active {
+    background-size: 100% 2px;
+  }
+
+  li.hidden {
+    display: none !important;
+  }
+
+  .admin-tab {
+    ul {
+      padding: 0 0.75rem;
+      margin-right: 2.5rem;
+
+      display: none;
+      position: absolute;
+      z-index: 1;
+
+      float: left;
+
+      top: 8vh;
+
+      background-color: var(--bg-color-main);
+      border-radius: 0 0 10% 10%;
+      box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    }
+    li {
+      margin: 0.5rem 0 1rem 0;
+      
+      display: flex;
+      flex-direction: column;
+      float: left;
+    }
+  }
+  .admin-tab:hover ul {
+    display: flex;
+    flex-direction: column;
+  }
 }
-.topnav ul li:hover,
-.topnav ul li.active {
-  background-size: 100% 2px;
-}
+
 
 .topnav-hamburger {
   display: none;
@@ -140,9 +170,9 @@ footer {
   align-items: center;
 
   width: 100%;
-  height: 2.5rem;
+  height: 8vh;
 
-  background-color: var(--bg-color-secondary-200);
+  background-color: var(--bg-color-secondary-050);
 
   .footer-fb-icon {
     margin-left: var(--margin-section-sides);
@@ -159,6 +189,54 @@ footer {
   }
 }
 
+/* login */
+.login-page-container {
+  overflow: hidden;
+
+  height: 82vh;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  
+  .login-contents {
+    padding: 2rem;
+
+    width: min(356px, 60%);
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+
+    background-color: var(--bg-color-accent-050);
+    box-shadow: 0px 6px 30px 0px var(--bg-color-secondary-100);
+    border-radius: 10%;
+
+    input, button {
+      margin: 0.5rem 0;
+      padding: 0.5rem;
+
+      width: 300px;
+
+      font-size: 18px;
+    }
+
+    button {
+      width: 100%;
+
+      background-color: var(--bg-color-secondary-100);
+      border: 2px var(--bg-color-secondary-100) solid;
+      border-radius: 10px;
+      color: #ffffff; 
+      transition: all 300ms;
+    }
+    button:hover {
+      background-color: var(--bg-color-secondary-050);
+      color: var(--bg-color-secondary-100);
+    }
+  }
+}
 
 /* main */
 .main-container {
@@ -207,7 +285,7 @@ footer {
   padding: var(--padding-section) 0;
 
   border-radius: 10px;
-  border: 2px solid var(--bg-color-accent);
+  box-shadow: 0px 6px 10px 0px var(--bg-color-secondary-100);
 
   h3 {
     margin: 0;
@@ -302,9 +380,10 @@ footer {
 
 /* donation btn */
 .main-donation-btn {
-  background-color: var(--bg-color-accent);
+  background-color: var(--bg-color-accent-100);
   border-radius: 10px;
-  border: 2px var(--bg-color-accent) solid;
+  border: 2px var(--bg-color-accent-100) solid;
+  box-shadow: 0px 6px 10px 0px var(--bg-color-secondary-100);
 
   height: 92px;
 
@@ -318,7 +397,7 @@ footer {
   transition: all 500ms ease-out;
 }
 .main-donation-btn:hover {
-  background-color: var(--bg-color-accent-200);
+  background-color: var(--bg-color-accent-050);
 }
 
 
@@ -329,7 +408,7 @@ footer {
 
   min-height: 70vh;
 
-  border: 2px solid var(--bg-color-accent);
+  box-shadow: 0px 6px 30px 0px var(--bg-color-secondary-100);
   border-radius: 10px;
 
   background-color: var(--bg-color-div);
@@ -337,6 +416,16 @@ footer {
   h3, h2 {
     margin: 0.5rem 1.5rem;
   }
+
+  .news-entry-date {
+    display: block;
+    float: left;
+  }
+}
+.page-container.news {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
 }
 .page-content-container {
   padding: 0.75rem 1.5rem;
@@ -363,6 +452,15 @@ footer {
   padding: 0.25rem 1.5rem;
   
   white-space: pre-wrap;
+}
+.news-entry-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.news-entry-image {
+  width: 100%;
+  height: auto;
 }
 
 /* pagination */
@@ -399,7 +497,7 @@ footer {
   }
   
   .selected {
-    background-color: var(--bg-color-accent);
+    background-color: var(--bg-color-accent-100);
     pointer-events: none;
   }
 
@@ -414,6 +512,12 @@ footer {
 .prayer-timetable-container {
   flex-direction: column;
   align-items: center;
+    
+  .inner-contents {
+    display: flex;
+    flex-direction: column;
+    align-items: center;    
+  }
 }
 .prayer-timetable-month-arrow:hover {
   color: var(--bg-color-secondary-100);
@@ -423,7 +527,6 @@ footer {
 
   text-align: center;
 
-  width: 50%;
   thead {
     background-color: var(--bg-color-secondary-100);
     color: #ffffff;
@@ -442,24 +545,39 @@ footer {
   }
 }
 
+/* contact */
+.contact-section {
+  margin-top: 1.25rem;
+
+  .contact-title {
+    align-items: center;
+
+    h3 {
+      margin-left: 0.25rem;
+    }
+  }
+}
+
 /* admin */
 .admin-page-container {
   margin: 1rem var(--margin-sides);
  
   min-height: 70vh;
 
-  border: 2px solid var(--bg-color-accent);
   border-radius: 10px;
+  box-shadow: 0px 6px 30px 0px var(--bg-color-secondary-100);
 
   background-color: var(--bg-color-div);
 
   h2 {
     display: flex;
     justify-content: center;
+
+    margin-top: 0;
   }
 }
 .admin-page-content {
-  padding: 0 5rem;
+  padding: 1rem 0;
 }
 
 .admin-main-section {
@@ -470,7 +588,7 @@ footer {
   font-weight: bold;
   font-size: 24px;
 
-  border-bottom: 2px var(--bg-color-accent) solid;
+  border-bottom: 2px var(--bg-color-accent-050) solid;
 
   transition: background 700ms;
 
@@ -486,16 +604,19 @@ footer {
   background-color: var(--bg-color-main);
 }
 
-.upd-prayer-times .buttons {
+.admin-page-content .buttons {
   justify-content: center;
 
   .button {
     margin: 0 1rem;
 
-    width: 75px;
-    height: 35px;
+    display: flex;
+    justify-content: center;
+    align-items: center;    
 
-    display: none;
+    width: 100px;
+    height: 35px;
+    font-size: 18px;
 
     background-color: var(--bg-color-secondary-100);
     border: 2px var(--bg-color-secondary-100) solid;
@@ -505,8 +626,14 @@ footer {
     transition: all 300ms;
   }
   .button:hover {
-    background-color: var(--bg-color-secondary-200);
+    background-color: var(--bg-color-secondary-050);
     color: var(--bg-color-secondary-100);
+  }
+}
+.upd-prayer-times .buttons {
+  .button {
+    display: none;
+
   }
   .visible {
     display: flex;
@@ -514,17 +641,69 @@ footer {
     align-items: center;    
   }
 }
+/* Update news list */
+.upd-news-list {
+  .news-entry-date,
+  .news-entry-title,
+  .buttons {
+    flex:30%;
+
+    display: flex;
+    align-items: center;
+  }
+
+  .news-entries {
+    padding: 0.75rem 0;
+    transition: background 300ms;
+  }  
+  .news-entries:hover {
+    background-color: var(--bg-color-main);
+    transition: background 700ms;
+  }
+
+  .buttons .add {
+    margin: 0.75rem 0;
+  }
+}
+/* udpate news entry */
+.upd-news-entry {
+  .upd-entry-section {
+    padding: 0 5%;
+
+    display: flex;
+
+    margin: 0.5rem 0;
+
+    .section-title {
+      flex: 20%;
+    }
+    .section-input {
+      flex: 40%;
+    }
+  }
+
+  .buttons {
+    margin: 1rem 0 0 0;
+  }
+}
+
+/* update prayer times */
 .upd-prayer-times {
 
   .prayer-times {
     padding: 0 10%;
+
+    flex-direction: column;
+    align-items: space-between;
+
+    font-size: 18px;
   }
   .prayer {
     margin: 1rem 0;
   }
 
   .prayer-title {
-    flex: 30%;
+    flex: 50%;
     display: flex;
     align-items: center;
   }
@@ -533,8 +712,8 @@ footer {
   }
   .prayer-text-area.visible {
     display: flex;
-    flex: 70%;
-    justify-content: center;
+    flex-direction: row;
+    justify-content: right;
     align-items: center;    
   }
   
@@ -573,7 +752,6 @@ footer {
   }
   .topnav.visible ul {
     transform: translateX(0%);
-
   }
 
   .topnav-hamburger {
@@ -597,7 +775,54 @@ footer {
   .main-about-us-address {
     margin: 0.5rem 0;
   }
+
+  /* prayer times */
+  .prayer-times-table-container {
+    width: auto;
+  }
+  .prayer-times-table {
+    th, td {
+      padding: 2px;
+      font-size: 12px;
+    }
+  }
+
+  /* admin */
+  /* login */
+  .login-page-container {
+    .login-contents {
+      input {
+        width: auto;
+      }
+    }
+  }
+
+  /* udpate news list */
+  .upd-news-list {
+    .news-entries {
+      flex-direction: column;
+      align-items: center;
+    }
+  }
+
+  /* udpate news entry */
+  .upd-entry-section {
+    flex-direction: column;
+
+    padding: 0 3%;
+  }
 }
 
-/* @media screen and (min-width: 760px) {
-  } */
+@media screen and (max-width: 300px) {
+  .upd-prayer-times {
+    .prayer {
+      margin-bottom: 0;
+
+      flex-direction: column;
+
+      .prayer-title {
+        margin-bottom: 0;
+      }
+    }
+  }
+}

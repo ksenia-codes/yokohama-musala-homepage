@@ -146,7 +146,7 @@ export function writeGregorianDate() {
         "December",
     ];
 
-    const wdNames = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
+    const wdNames = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 
     let outputGregorianDate = `${monthNames[today.getMonth()]
         } ${today.getDate()}, ${today.getFullYear()} (${wdNames[today.getDay()]})`;
