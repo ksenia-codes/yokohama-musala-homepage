@@ -1,7 +1,13 @@
 import React, { useContext, useEffect } from "react";
+import PhoneIcon from "@mui/icons-material/Phone";
+import FacebookIcon from "@mui/icons-material/Facebook";
+import EmailIcon from "@mui/icons-material/Email";
 
 // components
-import { HeaderContext, HeaderContextType } from "../styles/HeaderContext";
+import {
+  HeaderContext,
+  HeaderContextType,
+} from "../common/context/HeaderContext";
 import { PAGE_NAMES } from "../common/Const";
 
 function Contact() {
@@ -19,21 +25,30 @@ function Contact() {
       <div className="page-content-container">
         You can contact us using the following
         <div>
-          <div>
-            <h3>Phone</h3>
+          <div className="contact-section">
+            <div className="disp-flex contact-title">
+              <PhoneIcon />
+              <h3>Phone</h3>
+            </div>
             <div>045-294-8816</div>
           </div>
-          <div>
-            <h3>Facebook</h3>
+          <div className="contact-section">
+            <div className="disp-flex contact-title">
+              <FacebookIcon />
+              <h3>Facebook</h3>
+            </div>
             <div>
               <a href="https://www.facebook.com/yokohamamusala/">
                 https://www.facebook.com/yokohamamusala/
               </a>
             </div>
           </div>
-          <div>
-            <h3>Email</h3>
-            <div>(yokohamamusala@gmail.com)</div>
+          <div className="contact-section">
+            <div className="disp-flex contact-title">
+              <EmailIcon />
+              <h3>Email</h3>
+            </div>
+            <div>yokohamamusala@gmail.com</div>
           </div>
         </div>
       </div>

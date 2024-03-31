@@ -1,7 +1,7 @@
 import React from "react";
 
 // components
-import PrayerTimesTableComponent from "../components/PrayerTimesTableComponent";
+import PrayerTimesTableComponent from "../Components/PrayerTimesTableComponent";
 
 function PrayerTimes() {
   return (

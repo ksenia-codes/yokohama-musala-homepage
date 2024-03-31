@@ -1,6 +1,15 @@
-import React from "react";
+import React, { useEffect, useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
+
+import { supabase } from "../../supabase";
+import { Session } from "@supabase/supabase-js";
+import Login from "../Login";
+import {
+  HeaderContext,
+  HeaderContextType,
+} from "../../common/context/HeaderContext";
+import { PAGE_NAMES } from "../../common/Const";
 
 function AdminMain() {
   // useNavigate
@@ -9,7 +18,26 @@ function AdminMain() {
     navigate(`/${path}`);
   };
 
-  return (
+  // useContext
+  const { updateActiveTab } = useContext(HeaderContext) as HeaderContextType;
+
+  // useState
+  const [session, setSession] = useState<Session | null>(null);
+
+  //useEffect
+  useEffect(() => {
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      setSession(session);
+    });
+
+    supabase.auth.onAuthStateChange((_event, session) => {
+      setSession(session);
+    });
+
+    updateActiveTab(PAGE_NAMES.admin);
+  }, []);
+
+  return session ? (
     <div className="admin-page-container">
       <div className="admin-main-section-container">
         <div
@@ -32,6 +60,8 @@ function AdminMain() {
         </div>
       </div>
     </div>
+  ) : (
+    <Login />
   );
 }
 

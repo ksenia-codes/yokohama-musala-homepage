@@ -1,198 +1,182 @@
-import React, { useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import dayjs from "dayjs";
 import customParseFormat from "dayjs/plugin/customParseFormat";
-import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
-import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-import { TimePicker } from "@mui/x-date-pickers/TimePicker";
 
-import prayerJSON from "../../assets/json/prayerTimes.json";
+import UpdatePrayerTimesComponent from "../../Components/Admin/UpdatePrayerTimesComponent";
+
+import { supabase } from "../../supabase";
+import { Session } from "@supabase/supabase-js";
+import Login from "../Login";
+import { IPrayers } from "../../common/Interfaces";
+import {
+  HeaderContext,
+  HeaderContextType,
+} from "../../common/context/HeaderContext";
+import { PAGE_NAMES } from "../../common/Const";
 
 function UpdatePrayerTimes() {
+  enum ScreenMode {
+    edit = "edit",
+    view = "view",
+  }
+
+  enum Prayers {
+    fajr = "Fajr",
+    dhuhr = "Dhuhr",
+    asr = "Asr",
+    maghreb = "Maghreb",
+    isha = "Isha",
+    jummah = "Jummah",
+  }
+
+  // useContext
+  const { updateActiveTab } = useContext(HeaderContext) as HeaderContextType;
+
   // useState
-  const [mode, setMode] = useState("edit");
-  const [fajr, setFajr] = useState(prayerJSON.fajr);
-  const [dhuhr, setDhuhr] = useState(prayerJSON.dhuhr);
-  const [asr, setAsr] = useState(prayerJSON.asr);
-  const [maghreb, setMaghreb] = useState(prayerJSON.maghreb);
-  const [isha, setIsha] = useState(prayerJSON.isha);
-  const [jummah, setJummah] = useState(prayerJSON.jummah);
+  const [session, setSession] = useState<Session | null>(null);
+  const [prayersData, setPrayersData] = useState([] as IPrayers[]);
+  const [mode, setMode] = useState(ScreenMode.view);
+  const [fajr, setFajr] = useState("");
+  const [dhuhr, setDhuhr] = useState("");
+  const [asr, setAsr] = useState("");
+  const [maghreb, setMaghreb] = useState("");
+  const [isha, setIsha] = useState("");
+  const [jummah, setJummah] = useState("");
+
+  // useEffect
+  useEffect(() => {
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      setSession(session);
+    });
+
+    supabase.auth.onAuthStateChange((_event, session) => {
+      setSession(session);
+    });
+
+    updateActiveTab(PAGE_NAMES.admin);
+
+    fetchPrayersData().then((data) => {
+      setPrayersData(data);
+      prayersData.forEach((prayer: IPrayers) => {
+        setTimeValue(prayer.prayer, prayer.time);
+      });
+    });
+  }, []);
+
+  const fetchPrayersData = async () => {
+    const { data } = await supabase.from("prayer_times_daily_tbl").select();
+    if (data !== null) {
+      return data[0].prayer_times;
+    }
+  };
 
   // handlers
   const onSaveCLick = () => {
-    console.log("clicked");
-    setMode("view");
+    updatePrayerTimes();
   };
+  const updatePrayerTimes = async () => {
+    const data: IPrayers[] = [
+      { prayer: Prayers.fajr, time: fajr },
+      { prayer: Prayers.dhuhr, time: dhuhr },
+      { prayer: Prayers.asr, time: asr },
+      { prayer: Prayers.maghreb, time: maghreb },
+      { prayer: Prayers.isha, time: isha },
+      { prayer: Prayers.jummah, time: jummah },
+    ];
+
+    const { error } = await supabase
+      .from("prayer_times_daily_tbl")
+      .update({ prayer_times: data })
+      .eq("id", 1);
+
+    // if failed, log the error and stay on the edit mode
+    if (error) {
+      console.log("Fetch error:", error.message);
+      return;
+    }
+    // otherwise switch modes
+    setMode(ScreenMode.view);
+    setPrayersData(data);
+  };
+
   const onCancelClick = () => {
-    console.log("clicked");
-    setMode("view");
+    setMode(ScreenMode.view);
   };
 
   const onEditClick = () => {
-    setMode("edit");
+    setMode(ScreenMode.edit);
+    dayjs(fajr, "HH:mm");
   };
 
-  const onTimeValueChanged = (newValue: string, prayer: string) => {
+  const setTimeValue = (prayer: string, newValue: string) => {
     switch (prayer) {
-      case "fajr":
+      case Prayers.fajr:
         setFajr(newValue);
         break;
-      case "dhuhr":
+      case Prayers.dhuhr:
         setDhuhr(newValue);
         break;
-      case "asr":
+      case Prayers.asr:
         setAsr(newValue);
         break;
-      case "maghreb":
+      case Prayers.maghreb:
         setMaghreb(newValue);
         break;
-      case "isha":
+      case Prayers.isha:
         setIsha(newValue);
         break;
-      case "jummah":
+      case Prayers.jummah:
         setJummah(newValue);
         break;
     }
   };
+  const onTimeValueChanged = (prayer: string, newValue: string) => {
+    setTimeValue(prayer, newValue);
+  };
 
   dayjs.extend(customParseFormat);
 
-  return (
+  return session ? (
     <div className="admin-page-container">
       <div className="admin-page-content upd-prayer-times">
         <h2>Edit prayer times</h2>
         <div className="disp-flex buttons">
           <div
-            className={`button ${mode === "view" ? "visible" : ""} `}
+            className={`button ${mode === ScreenMode.view ? "visible" : ""} `}
             onClick={onEditClick}
           >
             Edit
           </div>
           <div
-            className={`button ${mode === "edit" ? "visible" : ""} `}
+            className={`button ${mode === ScreenMode.edit ? "visible" : ""} `}
             onClick={onSaveCLick}
           >
             Save
           </div>
           <div
-            className={`button ${mode === "edit" ? "visible" : ""} `}
+            className={`button ${mode === ScreenMode.edit ? "visible" : ""} `}
             onClick={onCancelClick}
           >
             Cancel
           </div>
         </div>
-        <div className="prayer-times">
-          <div className="disp-flex prayer">
-            <div className="prayer-title">Fajr</div>
-            <div
-              className={`prayer-text-area ${mode === "view" ? "visible" : ""}`}
-            >
-              {prayerJSON.fajr}
-            </div>
-            <LocalizationProvider dateAdapter={AdapterDayjs}>
-              <TimePicker
-                className={`prayer-text-area ${
-                  mode === "edit" ? "visible" : ""
-                }`}
-                value={dayjs(fajr, "HH:mm")}
-                ampm={false}
-                onChange={(newValue) => {
-                  if (newValue === null) return;
-                  onTimeValueChanged(
-                    `${newValue.hour()}:${newValue.minute()}`,
-                    "fajr"
-                  );
-                }}
-              ></TimePicker>
-            </LocalizationProvider>
-          </div>
-          <div className="disp-flex prayer">
-            <div className="prayer-title">Dhuhr</div>
-            <div
-              className={`prayer-text-area ${mode === "view" ? "visible" : ""}`}
-            >
-              {prayerJSON.dhuhr}
-            </div>
-            <LocalizationProvider dateAdapter={AdapterDayjs}>
-              <TimePicker
-                className={`prayer-text-area ${
-                  mode === "edit" ? "visible" : ""
-                }`}
-                value={dayjs(dhuhr, "HH:mm")}
-                ampm={false}
-              ></TimePicker>
-            </LocalizationProvider>
-          </div>
-          <div className="disp-flex prayer">
-            <div className="prayer-title">Asr</div>
-            <div
-              className={`prayer-text-area ${mode === "view" ? "visible" : ""}`}
-            >
-              {prayerJSON.asr}
-            </div>
-            <LocalizationProvider dateAdapter={AdapterDayjs}>
-              <TimePicker
-                className={`prayer-text-area ${
-                  mode === "edit" ? "visible" : ""
-                }`}
-                value={dayjs(asr, "HH:mm")}
-                ampm={false}
-              ></TimePicker>
-            </LocalizationProvider>
-          </div>
-          <div className="disp-flex prayer">
-            <div className="prayer-title">Maghreb</div>
-            <div
-              className={`prayer-text-area ${mode === "view" ? "visible" : ""}`}
-            >
-              {prayerJSON.maghreb}
-            </div>
-            <LocalizationProvider dateAdapter={AdapterDayjs}>
-              <TimePicker
-                className={`prayer-text-area ${
-                  mode === "edit" ? "visible" : ""
-                }`}
-                value={dayjs(maghreb, "HH:mm")}
-                ampm={false}
-              ></TimePicker>
-            </LocalizationProvider>
-          </div>
-          <div className="disp-flex prayer">
-            <div className="prayer-title">Isha</div>
-            <div
-              className={`prayer-text-area ${mode === "view" ? "visible" : ""}`}
-            >
-              {prayerJSON.isha}
-            </div>
-            <LocalizationProvider dateAdapter={AdapterDayjs}>
-              <TimePicker
-                className={`prayer-text-area ${
-                  mode === "edit" ? "visible" : ""
-                }`}
-                value={dayjs(isha, "HH:mm")}
-                ampm={false}
-              ></TimePicker>
-            </LocalizationProvider>
-          </div>
-          <div className="disp-flex prayer">
-            <div className="prayer-title">Jummah</div>
-            <div
-              className={`prayer-text-area ${mode === "view" ? "visible" : ""}`}
-            >
-              {prayerJSON.jummah}
-            </div>
-            <LocalizationProvider dateAdapter={AdapterDayjs}>
-              <TimePicker
-                className={`prayer-text-area ${
-                  mode === "edit" ? "visible" : ""
-                }`}
-                value={dayjs(jummah, "HH:mm")}
-                ampm={false}
-              ></TimePicker>
-            </LocalizationProvider>
-          </div>
+        <div className="disp-flex prayer-times">
+          {prayersData.map((prayer: IPrayers) => (
+            <UpdatePrayerTimesComponent
+              prayer={prayer.prayer}
+              time={prayer.time}
+              mode={mode}
+              onTimeValueChanged={(newValue: string) =>
+                onTimeValueChanged(prayer.prayer, newValue)
+              }
+              key={prayer.prayer}
+            />
+          ))}
         </div>
       </div>
     </div>
+  ) : (
+    <Login />
   );
 }
 
