@@ -35,13 +35,11 @@ function PrayerTimesTableComponent() {
 
   const handlePrevMonthOnClick = () => {
     dateDisplayed.setMonth(dateDisplayed.getMonth() - 1);
-    setDateDisplayed(dateDisplayed);
     fetchData(dateDisplayed.getFullYear(), dateDisplayed.getMonth() + 1);
   };
 
   const handleNextMonthOnClick = () => {
     dateDisplayed.setMonth(dateDisplayed.getMonth() + 1);
-    setDateDisplayed(dateDisplayed);
     fetchData(dateDisplayed.getFullYear(), dateDisplayed.getMonth() + 1);
   };
 

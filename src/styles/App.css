@@ -320,9 +320,7 @@ footer {
   flex-direction: column;
 }
 .main-section-news-entries {
-  /* margin: 0.25rem var(--margin-section-sides); */
-  /* margin: 0 var(--margin-section-sides-half);  */
-  padding: 0.25rem var(--margin-section-sides);
+  padding: 1rem var(--margin-section-sides);
 
   transition: background 300ms;
 
@@ -433,7 +431,7 @@ footer {
 
 /* news & updates page */
 .news-list-entries {
-  padding: 0.75rem 1.5rem;
+  padding: 1rem 1.5rem;
   transition: background 300ms;
 }
 .news-list-entry-date {
@@ -679,6 +677,15 @@ footer {
     }
     .section-input {
       flex: 40%;
+    }
+    input[type=checkbox] {
+      /* Double-sized Checkboxes */
+      -ms-transform: scale(0.5); /* IE */
+      -moz-transform: scale(0.5); /* FF */
+      -webkit-transform: scale(0.5); /* Safari and Chrome */
+      -o-transform: scale(0.5); /* Opera */
+      transform: scale(0.5);
+      padding: 10px;
     }
   }
 

@@ -281,7 +281,6 @@ function UpdateNewsEntry({ mode }: Props) {
                   style={{
                     width: "70%",
                     textOverflow: "ellipsis",
-                    backgroundColor: "yellow",
                   }}
                   key={img.imgName}
                 >
@@ -300,7 +299,6 @@ function UpdateNewsEntry({ mode }: Props) {
               role={undefined}
               variant="contained"
               tabIndex={-1}
-              // startIcon={<CloudUploadIcon />}
             >
               <Input
                 type="file"
