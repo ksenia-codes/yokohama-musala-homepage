@@ -23,7 +23,7 @@ function PrayerTimesTableComponent() {
 
   const fetchData = async (year: number, month: number) => {
     const data = await fetch(
-      `http://api.aladhan.com/v1/calendarByCity/${year}/${month}?city=Yokohama&country=Japan&method=3`
+      `https://api.aladhan.com/v1/calendarByCity/${year}/${month}?city=Yokohama&country=Japan&method=3`
     );
     const dataRes = await data.json();
 
