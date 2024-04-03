@@ -51,9 +51,6 @@ function Access() {
                 loading="lazy"
                 referrerPolicy="no-referrer-when-downgrade"
               ></iframe>
-              <div>
-                Here we can add a picture of the entrance or some directions?
-              </div>
             </div>
           </div>
         </div>
