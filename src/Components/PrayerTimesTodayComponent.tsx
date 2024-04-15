@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
+import { getDocs, collection } from "firebase/firestore";
 
-import { supabase } from "../supabase";
+import { db } from "../firebase/firebase";
 import { IPrayers } from "../common/Interfaces";
 
 function PrayerTimesTodayComponent() {
@@ -13,9 +14,13 @@ function PrayerTimesTodayComponent() {
   }, []);
 
   async function fetchPrayersData() {
-    const { data } = await supabase.from("prayer_times_daily_tbl").select();
-    if (data !== null) {
-      setPrayersData(data[0].prayer_times);
+    const collectionRef = collection(db, "prayer_times_daily_tbl");
+    const prayersSnapshot = await getDocs(collectionRef);
+    const prayers = prayersSnapshot.docs.map((doc) => ({
+      ...doc.data(),
+    })) as IPrayers[];
+    if (prayers) {
+      setPrayersData(prayers);
     }
   }
 

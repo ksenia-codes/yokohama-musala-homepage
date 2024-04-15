@@ -1,8 +1,9 @@
 import React, { useContext, useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { getDocs, deleteDoc, doc, collection, query } from "firebase/firestore";
+import { useAuthState } from "react-firebase-hooks/auth";
 
-import { supabase } from "../../supabase";
-import { Session } from "@supabase/supabase-js";
+import { auth, db } from "../../firebase/firebase";
 import Login from "../Login";
 import { INews } from "../../common/Interfaces";
 import { PaginationComponent } from "../../Components/PaginationComponent";
@@ -11,8 +12,11 @@ import {
   HeaderContextType,
 } from "../../common/context/HeaderContext";
 import { PAGE_NAMES } from "../../common/Const";
+import dayjs from "dayjs";
 
 function UpdateNewsList() {
+  const [user] = useAuthState(auth);
+
   // useContext
   const { updateActiveTab } = useContext(HeaderContext) as HeaderContextType;
 
@@ -20,7 +24,6 @@ function UpdateNewsList() {
   let navigate = useNavigate();
 
   // useState
-  const [session, setSession] = useState<Session | null>(null);
   const [newsData, setNewsData] = useState([] as INews[]);
 
   const handleEditOnClick = (news: INews) => {
@@ -31,54 +34,39 @@ function UpdateNewsList() {
     navigate("/admin/news/add");
   };
 
-  const handleDeleteOnClick = (id: number) => {
+  const handleDeleteOnClick = async (id: string) => {
     if (
       window.confirm(
         "The news entry will be deleted permanently.\nAre you sure, you want to delete it?"
       )
     ) {
       // remove from db
-      deleteEntry(id).then((deleted) => {
-        if (deleted) {
-          setNewsData(newsData.filter((data) => data.id !== id));
-        }
+      await deleteDoc(doc(db, "news_tbl", id)).then(() => {
+        setNewsData(newsData.filter((data) => data.id !== id));
       });
     }
-  };
-  const deleteEntry = async (id: number) => {
-    const { error } = await supabase.from("news_tbl").delete().eq("id", id);
-    if (error?.message) {
-      console.log(error.message);
-      return false;
-    }
-    return true;
   };
 
   // useEffect
   useEffect(() => {
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      setSession(session);
-    });
-
-    supabase.auth.onAuthStateChange((_event, session) => {
-      setSession(session);
-    });
-
     updateActiveTab(PAGE_NAMES.admin);
 
-    fetchNewsData().then((data) => {
-      if (data) {
-        setNewsData(data);
-      }
-    });
+    fetchNewsData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const fetchNewsData = async () => {
-    const { data } = await supabase
-      .from("news_tbl")
-      .select()
-      .order("date", { ascending: false });
-    return data;
+    const q = query(collection(db, "news_tbl"));
+    const newsSnapshot = await getDocs(q);
+    const newsData = newsSnapshot.docs.map((doc) => ({
+      id: doc.id,
+      ...doc.data(),
+    })) as INews[];
+    if (newsData) {
+      setNewsData(
+        newsData.sort((a, b) => (dayjs(a.date) > dayjs(b.date) ? -1 : 1))
+      );
+    }
   };
 
   // set pagination (for the news page)
@@ -92,7 +80,7 @@ function UpdateNewsList() {
     return newsData.slice(firstPageIndex, lastPageIndex);
   }, [currentPage, PageSize, newsData]);
 
-  return session ? (
+  return user ? (
     <div className="admin-page-container">
       <div className="admin-page-content upd-news-list">
         <h2>Add or edit news & upates</h2>

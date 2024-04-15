@@ -1,12 +1,12 @@
 import React, { useContext, useEffect, useState } from "react";
 import dayjs from "dayjs";
 import customParseFormat from "dayjs/plugin/customParseFormat";
+import { getDocs, setDoc, doc, collection } from "firebase/firestore";
+import { useAuthState } from "react-firebase-hooks/auth";
 
-import UpdatePrayerTimesComponent from "../../Components/Admin/UpdatePrayerTimesComponent";
-
-import { supabase } from "../../supabase";
-import { Session } from "@supabase/supabase-js";
+import { auth, db } from "../../firebase/firebase";
 import Login from "../Login";
+import UpdatePrayerTimesComponent from "../../Components/Admin/UpdatePrayerTimesComponent";
 import { IPrayers } from "../../common/Interfaces";
 import {
   HeaderContext,
@@ -29,11 +29,12 @@ function UpdatePrayerTimes() {
     jummah = "Jummah",
   }
 
+  const [user] = useAuthState(auth);
+
   // useContext
   const { updateActiveTab } = useContext(HeaderContext) as HeaderContextType;
 
   // useState
-  const [session, setSession] = useState<Session | null>(null);
   const [prayersData, setPrayersData] = useState([] as IPrayers[]);
   const [mode, setMode] = useState(ScreenMode.view);
   const [fajr, setFajr] = useState("");
@@ -45,28 +46,24 @@ function UpdatePrayerTimes() {
 
   // useEffect
   useEffect(() => {
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      setSession(session);
-    });
-
-    supabase.auth.onAuthStateChange((_event, session) => {
-      setSession(session);
-    });
-
     updateActiveTab(PAGE_NAMES.admin);
 
-    fetchPrayersData().then((data) => {
-      setPrayersData(data);
-      prayersData.forEach((prayer: IPrayers) => {
-        setTimeValue(prayer.prayer, prayer.time);
-      });
-    });
+    fetchPrayersData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const fetchPrayersData = async () => {
-    const { data } = await supabase.from("prayer_times_daily_tbl").select();
-    if (data !== null) {
-      return data[0].prayer_times;
+    const collectionRef = collection(db, "prayer_times_daily_tbl");
+    const prayersSnapshot = await getDocs(collectionRef);
+    const prayers = prayersSnapshot.docs.map((doc) => ({
+      id: Number(doc.id),
+      ...doc.data(),
+    })) as IPrayers[];
+    if (prayers) {
+      setPrayersData(prayers);
+      prayers.forEach((prayer: IPrayers) => {
+        setTimeValue(prayer.prayer, prayer.time);
+      });
     }
   };
 
@@ -76,25 +73,21 @@ function UpdatePrayerTimes() {
   };
   const updatePrayerTimes = async () => {
     const data: IPrayers[] = [
-      { prayer: Prayers.fajr, time: fajr },
-      { prayer: Prayers.dhuhr, time: dhuhr },
-      { prayer: Prayers.asr, time: asr },
-      { prayer: Prayers.maghreb, time: maghreb },
-      { prayer: Prayers.isha, time: isha },
-      { prayer: Prayers.jummah, time: jummah },
+      { id: 1, prayer: Prayers.fajr, time: fajr },
+      { id: 2, prayer: Prayers.dhuhr, time: dhuhr },
+      { id: 3, prayer: Prayers.asr, time: asr },
+      { id: 4, prayer: Prayers.maghreb, time: maghreb },
+      { id: 5, prayer: Prayers.isha, time: isha },
+      { id: 6, prayer: Prayers.jummah, time: jummah },
     ];
 
-    const { error } = await supabase
-      .from("prayer_times_daily_tbl")
-      .update({ prayer_times: data })
-      .eq("id", 1);
+    data.forEach(async (prayer) => {
+      await setDoc(doc(db, "prayer_times_daily_tbl", String(prayer.id)), {
+        prayer: prayer.prayer,
+        time: prayer.time,
+      });
+    });
 
-    // if failed, log the error and stay on the edit mode
-    if (error) {
-      console.log("Fetch error:", error.message);
-      return;
-    }
-    // otherwise switch modes
     setMode(ScreenMode.view);
     setPrayersData(data);
   };
@@ -136,7 +129,7 @@ function UpdatePrayerTimes() {
 
   dayjs.extend(customParseFormat);
 
-  return session ? (
+  return user ? (
     <div className="admin-page-container">
       <div className="admin-page-content upd-prayer-times">
         <h2>Edit prayer times</h2>

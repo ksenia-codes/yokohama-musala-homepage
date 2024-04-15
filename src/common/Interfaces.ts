@@ -1,17 +1,15 @@
 export interface INews {
-    id?: number,
+    id: string,
     title: string,
     date: string,
     content: string,
-    img: INewsImages[],
+    img: string[],
     visible: boolean,
+    createdAt: string
 };
-export interface INewsImages {
-    imgName: string,
-    imgPath: string
-}
 
 export interface IPrayers {
+    id?: number,
     prayer: string;
     time: string;
 }
