@@ -1,25 +1,32 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 
-import { supabase } from "../supabase";
+import { auth } from "../firebase/firebase";
+import { signInWithEmailAndPassword } from "firebase/auth";
 
 function Login() {
   // useState
   const [loading, setLoading] = useState(false);
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
+
+  const emailRef = useRef<HTMLInputElement>(null);
+  const passwordRef = useRef<HTMLInputElement>(null);
 
   // handlers
   const handleLogin = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
     setLoading(true);
-    const { data, error } = await supabase.auth.signInWithPassword({
-      email,
-      password,
-    });
 
-    if (error) {
-      alert(error.message);
+    try {
+      setError("");
+
+      await signInWithEmailAndPassword(
+        auth,
+        emailRef.current!.value,
+        passwordRef.current!.value
+      );
+    } catch (error) {
+      setError("Failed to log in.");
     }
     setLoading(false);
   };
@@ -28,15 +35,15 @@ function Login() {
     <div className="login-page-container">
       <div className="login-contents">
         <h1 className="header">Sign in</h1>
+        {error && <div>{error}</div>}
         <form action="" className="login-form" onSubmit={handleLogin}>
           <div className="login-inputs">
             <input
               type="email"
               className="email"
               placeholder="Email"
-              value={email}
+              ref={emailRef}
               required={true}
-              onChange={(e) => setEmail(e.target.value)}
             />
           </div>
           <div className="login-inputs">
@@ -44,9 +51,8 @@ function Login() {
               type="password"
               className="password"
               placeholder="Password"
-              value={password}
+              ref={passwordRef}
               required={true}
-              onChange={(e) => setPassword(e.target.value)}
             />
           </div>
           <div className="submit-button">

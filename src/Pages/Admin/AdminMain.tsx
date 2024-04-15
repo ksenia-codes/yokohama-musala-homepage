@@ -1,9 +1,10 @@
-import React, { useEffect, useContext, useState } from "react";
+/* eslint-disable react-hooks/exhaustive-deps */
+import React, { useEffect, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
+import { useAuthState } from "react-firebase-hooks/auth";
 
-import { supabase } from "../../supabase";
-import { Session } from "@supabase/supabase-js";
+import { auth } from "../../firebase/firebase";
 import Login from "../Login";
 import {
   HeaderContext,
@@ -12,6 +13,8 @@ import {
 import { PAGE_NAMES } from "../../common/Const";
 
 function AdminMain() {
+  const [user] = useAuthState(auth);
+
   // useNavigate
   let navigate = useNavigate();
   const handleSectionOnClick = (path: string) => {
@@ -21,23 +24,12 @@ function AdminMain() {
   // useContext
   const { updateActiveTab } = useContext(HeaderContext) as HeaderContextType;
 
-  // useState
-  const [session, setSession] = useState<Session | null>(null);
-
   //useEffect
   useEffect(() => {
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      setSession(session);
-    });
-
-    supabase.auth.onAuthStateChange((_event, session) => {
-      setSession(session);
-    });
-
     updateActiveTab(PAGE_NAMES.admin);
   }, []);
 
-  return session ? (
+  return user ? (
     <div className="admin-page-container">
       <div className="admin-main-section-container">
         <div

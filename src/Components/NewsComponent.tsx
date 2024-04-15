@@ -1,10 +1,12 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { getDocs, collection, query, where } from "firebase/firestore";
 
-import { supabase } from "../supabase";
+import { db } from "../firebase/firebase";
 import { PaginationComponent } from "./PaginationComponent";
 import { INews } from "../common/Interfaces";
 import { PAGE_NAMES } from "../common/Const";
+import dayjs from "dayjs";
 
 interface Props {
   containerClassName: string;
@@ -21,20 +23,25 @@ function NewsComponent({ containerClassName, className, pageName }: Props) {
   }, []);
 
   async function fetchNewsData() {
-    const { data } = await supabase
-      .from("news_tbl")
-      .select()
-      .filter("visible", "eq", "true")
-      .order("date", { ascending: false });
-    if (data !== null) {
-      setNewsData(data);
+    const q = query(collection(db, "news_tbl"), where("visible", "==", true));
+    const newsSnapshot = await getDocs(q);
+    const newsData = newsSnapshot.docs.map((doc) => ({
+      id: doc.id,
+      ...doc.data(),
+    })) as INews[];
+
+    if (newsData) {
+      let filteredNews = newsData.filter((news) => dayjs(news.date) <= dayjs());
+      setNewsData(
+        filteredNews.sort((a, b) => (dayjs(a.date) > dayjs(b.date) ? -1 : 1))
+      );
     }
   }
 
   // useNavigate
   let navigate = useNavigate();
-  const handleNewsOnClick = (path: string, news: INews) => {
-    navigate(path, { state: { newsEntry: news } });
+  const handleNewsOnClick = (news: INews) => {
+    navigate(`/news/${news.id}`);
   };
 
   // set pagination (for the news page)
@@ -58,7 +65,7 @@ function NewsComponent({ containerClassName, className, pageName }: Props) {
       {newToDisplay.map((news) => (
         <div
           className={`disp-flex hover-cursor ${className}-entries`}
-          onClick={() => handleNewsOnClick(`/news/${news.id}`, news)}
+          onClick={() => handleNewsOnClick(news)}
           key={news.id}
         >
           <div className={`${className}-entry-date`}>
